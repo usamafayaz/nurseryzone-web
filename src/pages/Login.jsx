@@ -15,7 +15,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
         <div className="text-center">
           <img
@@ -32,7 +32,7 @@ const Login = () => {
             label="Email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(value) => setEmail(value)}
             placeholder="Enter your email"
           />
 
@@ -40,7 +40,7 @@ const Login = () => {
             label="Password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(value) => setPassword(value)}
             placeholder="Enter your password"
           />
 

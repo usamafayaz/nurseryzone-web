@@ -43,7 +43,7 @@ const ManagePlantsScreen = () => {
           icon={<FaLeaf />}
           placeholder="Enter plant name"
           value={plantData.name}
-          onChangeText={(text) => setPlantData({ ...plantData, name: text })}
+          onChange={(text) => setPlantData({ ...plantData, name: text })}
           error={error && !plantData.name ? "This field is required" : ""}
         />
         <InputField

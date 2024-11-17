@@ -1,6 +1,3 @@
-// src/components/InputField.jsx
-import React from "react";
-
 const InputField = ({ label, type = "text", value, onChange, placeholder }) => {
   return (
     <div className="mb-4">
@@ -8,7 +5,7 @@ const InputField = ({ label, type = "text", value, onChange, placeholder }) => {
       <input
         type={type}
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
       />

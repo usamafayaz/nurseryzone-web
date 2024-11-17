@@ -46,7 +46,7 @@ const DashboardScreen = () => {
     {
       title: "Chat with Gemini",
       icon: <FaComments size={40} />,
-      screen: "/chat",
+      screen: "/chat-bot",
       color: "bg-green-400",
     },
   ];
@@ -125,7 +125,7 @@ const DashboardScreen = () => {
             onClick={() => navigate(item.screen)}
           >
             <motion.div
-              className="mb-4"
+              className="mb-4 text-black"
               whileHover={{
                 rotate: [0, -10, 10, -10, 0],
                 transition: { duration: 0.5 },
