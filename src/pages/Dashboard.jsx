@@ -1,142 +1,117 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
-  FaLeaf,
-  FaEye,
-  FaShoppingCart,
-  FaStar,
-  FaUsers,
-  FaComments,
-} from "react-icons/fa";
+  Leaf,
+  Eye,
+  ShoppingCart,
+  Star,
+  Users,
+  MessageSquare,
+  ArrowRight,
+} from "lucide-react";
 
 const DashboardScreen = () => {
   const navigate = useNavigate();
+
   const menuItems = [
     {
       title: "Manage Plants",
-      icon: <FaLeaf size={40} />,
+      description: "Add, edit, and maintain your plant inventory",
+      icon: <Leaf size={24} />,
       screen: "/manage-plants",
-      color: "bg-green-500",
+      color: "bg-green-600",
     },
     {
       title: "View Plants",
-      icon: <FaEye size={40} />,
+      description: "Browse and search your plant collection",
+      icon: <Eye size={24} />,
       screen: "/view-plants",
-      color: "bg-blue-500",
+      color: "bg-green-600",
     },
     {
       title: "Orders",
-      icon: <FaShoppingCart size={40} />,
+      description: "Track and manage customer orders",
+      icon: <ShoppingCart size={24} />,
       screen: "/order-details",
-      color: "bg-orange-500",
+      color: "bg-green-600",
     },
     {
       title: "Reviews",
-      icon: <FaStar size={40} />,
+      description: "Monitor customer feedback and ratings",
+      icon: <Star size={24} />,
       screen: "/reviews",
-      color: "bg-yellow-500",
+      color: "bg-green-600",
     },
     {
       title: "Customers",
-      icon: <FaUsers size={40} />,
+      description: "View and manage customer information",
+      icon: <Users size={24} />,
       screen: "/customers",
-      color: "bg-purple-500",
+      color: "bg-green-600",
     },
     {
       title: "Chat with Gemini",
-      icon: <FaComments size={40} />,
+      description: "Get AI assistance for your queries",
+      icon: <MessageSquare size={24} />,
       screen: "/chat-bot",
-      color: "bg-green-400",
+      color: "bg-green-600",
     },
   ];
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12,
-      },
-    },
-  };
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
   return (
-    <div className="min-h-screen bg-white py-6 px-4">
-      <motion.h1
-        initial="hidden"
-        animate="visible"
-        variants={headerVariants}
-        className="text-3xl font-bold text-green-800 mb-5 text-center"
-      >
-        Dashboard
-      </motion.h1>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      {/* Header Section */}
+      <div className="bg-green-600 text-white py-8 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <Leaf size={32} className="text-white" />
+            <div>
+              <h1 className="text-3xl font-bold">Nursery Zone Dashboard</h1>
+              <p className="text-green-100 mt-1">
+                Manage your botanical business with ease
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
-      >
-        {menuItems.map((item, index) => (
-          <motion.div
-            key={index}
-            variants={itemVariants}
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.2 },
-            }}
-            whileTap={{
-              scale: 0.95,
-              transition: { duration: 0.1 },
-            }}
-            className={`flex flex-col items-center p-6 rounded-xl shadow-lg cursor-pointer ${item.color}`}
-            onClick={() => navigate(item.screen)}
-          >
-            <motion.div
-              className="mb-4 text-black"
-              whileHover={{
-                rotate: [0, -10, 10, -10, 0],
-                transition: { duration: 0.5 },
-              }}
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => navigate(item.screen)}
+              className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
-              {item.icon}
-            </motion.div>
-            <p className="text-white font-semibold text-lg">{item.title}</p>
-          </motion.div>
-        ))}
-      </motion.div>
+              <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
+              <div className="p-6">
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-lg bg-green-50 text-green-600">
+                    {item.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">{item.description}</p>
+                  </div>
+                  <ArrowRight
+                    className="text-gray-400 group-hover:text-green-600 transform translate-x-0 group-hover:translate-x-1 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                    size={20}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Decorative circles */}
+      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-28 -right-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
     </div>
   );
 };

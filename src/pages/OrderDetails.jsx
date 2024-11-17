@@ -1,51 +1,122 @@
-// src/screens/OrderDetailsScreen.js
 import React from "react";
-// import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
+import { DollarSign, Package, Calendar, User, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { DUMMY_ORDERS } from "../utils/dummyData";
 
 const OrderDetailsScreen = () => {
-  const renderOrder = (item) => (
-    <div className="bg-white p-4 rounded-lg shadow-md mb-6">
-      <p className="text-lg font-bold text-green-800 mb-2">Order #{item.id}</p>
-      <p className="text-sm text-green-600 mb-1">
-        Customer: {item.customerName}
-      </p>
-      <p className="text-sm text-green-600 mb-1">Date: {item.date}</p>
-      <p className="text-sm text-green-500 mb-3">Status: {item.status}</p>
-      <p className="text-lg font-bold text-green-800 mb-3">Items:</p>
-      {item.items.map((orderItem, index) => (
-        <div key={index} className="ml-4 mb-2">
-          <p className="text-sm text-green-600">
-            Plant ID: {orderItem.plantId}
-          </p>
-          <p className="text-sm text-green-600">
-            Quantity: {orderItem.quantity}
-          </p>
-          <p className="text-sm text-green-600">Price: ${orderItem.price}</p>
-        </div>
-      ))}
-      <p className="text-lg font-bold text-green-700 mt-4 text-right">
-        Total: ${item.total}
-      </p>
-    </div>
-  );
+  const navigate = useNavigate();
 
   return (
-    <div className="flex-1 bg-white py-4">
-      <h1 className="text-2xl font-bold text-green-800 mb-5">
-        Customer's Orders
-      </h1>
-      {DUMMY_ORDERS.length > 0 ? (
-        DUMMY_ORDERS.map((item) => (
-          <div key={item.id} className="mb-6">
-            {renderOrder(item)}
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      {/* Header Section */}
+      <div className="bg-green-600 text-white py-4 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <Package size={32} />
+            <div>
+              <h1 className="text-xl font-bold">Order Details</h1>
+              <p className="text-green-100 mt-1">
+                View and manage customer orders
+              </p>
+            </div>
           </div>
-        ))
-      ) : (
-        <p className="text-center text-lg text-green-600">
-          No orders available.
-        </p>
-      )}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {DUMMY_ORDERS.length > 0 ? (
+          DUMMY_ORDERS.map((order) => (
+            <div key={order.id} className="mb-8">
+              <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
+                {/* Decorative element */}
+                <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
+
+                {/* Order Header */}
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">
+                      Order #{order.id}
+                    </h2>
+                    <div className="flex items-center mt-2 text-gray-600">
+                      <Calendar size={16} className="mr-2" />
+                      <span className="text-sm">{order.date}</span>
+                    </div>
+                  </div>
+                  <span className="px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800">
+                    {order.status}
+                  </span>
+                </div>
+
+                {/* Customer Info */}
+                <div className="flex items-center mb-6 p-4 bg-gray-50 rounded-lg">
+                  <User size={20} className="text-gray-400 mr-3" />
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      {order.customerName}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Order Items */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-gray-900">Order Items</h3>
+                  {order.items.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
+                    >
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          Plant ID: {item.plantId}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Quantity: {item.quantity}
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <DollarSign size={16} className="text-gray-400 mr-1" />
+                        <span className="font-medium text-gray-900">
+                          ${item.price}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Total */}
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold text-gray-900">Total</span>
+                    <div className="flex items-center">
+                      <DollarSign size={20} className="text-green-600 mr-1" />
+                      <span className="text-xl font-bold text-green-600">
+                        ${order.total}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="text-center py-12">
+            <Package size={48} className="mx-auto text-gray-400 mb-4" />
+            <p className="text-xl font-medium text-gray-900">
+              No orders available
+            </p>
+            <p className="text-gray-500 mt-2">
+              New orders will appear here when customers make purchases
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Decorative circles */}
+      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-28 -right-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
     </div>
   );
 };

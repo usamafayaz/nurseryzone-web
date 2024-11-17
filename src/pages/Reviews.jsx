@@ -1,41 +1,88 @@
-// src/screens/ReviewsScreen.js
 import React from "react";
+import { MessageSquare, Star, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { DUMMY_REVIEWS } from "../utils/dummyData";
 
 const ReviewsScreen = () => {
-  const renderReview = (item) => (
-    <div className="bg-white p-4 rounded-lg shadow-md mb-6">
-      <div className="flex justify-between mb-2">
-        <p className="text-lg font-bold text-green-800">{item.customerName}</p>
-        <p className="text-sm text-green-600">{item.date}</p>
-      </div>
-      <p className="text-sm text-green-600 mb-2">Plant: {item.plantName}</p>
-      <div className="flex items-center mb-2">
-        <p className="text-sm text-green-600 mr-2">Rating:</p>
-        <p className="text-lg font-bold text-yellow-500">
-          {"⭐".repeat(item.rating)}
-        </p>
-      </div>
-      <p className="text-sm text-green-800 mt-2">{item.comment}</p>
-    </div>
-  );
+  const navigate = useNavigate();
 
   return (
-    <div className="flex-1 bg-white py-4 px-6">
-      <h1 className="text-2xl font-bold text-green-800 mb-5">
-        Customer's Reviews
-      </h1>
-      {DUMMY_REVIEWS.length > 0 ? (
-        DUMMY_REVIEWS.map((item) => (
-          <div key={item.id} className="mb-6">
-            {renderReview(item)}
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
+      {/* Header Section */}
+      <div className="bg-green-600 text-white py-4 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <MessageSquare size={32} />
+            <div>
+              <h1 className="text-xl font-bold">Customer Reviews</h1>
+              <p className="text-green-100 mt-1">
+                View and manage customer feedback
+              </p>
+            </div>
           </div>
-        ))
-      ) : (
-        <p className="text-center text-lg text-green-600">
-          No reviews available.
-        </p>
-      )}
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {DUMMY_REVIEWS.length > 0 ? (
+          DUMMY_REVIEWS.map((review) => (
+            <div key={review.id} className="mb-8">
+              <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
+                {/* Decorative element */}
+                <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
+
+                {/* Review Header */}
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {review.customerName}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {review.plantName}
+                    </p>
+                  </div>
+                  <span className="text-sm text-gray-600">{review.date}</span>
+                </div>
+
+                {/* Rating */}
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, index) => (
+                    <Star
+                      key={index}
+                      size={20}
+                      className={`${
+                        index < review.rating
+                          ? "text-yellow-400 fill-current"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Review Comment */}
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <p className="text-gray-700">{review.comment}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="text-center py-12">
+            <MessageSquare size={48} className="mx-auto text-gray-400 mb-4" />
+            <p className="text-xl font-medium text-gray-900">No reviews yet</p>
+            <p className="text-gray-500 mt-2">
+              Customer reviews will appear here
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Decorative circles */}
+      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-28 -right-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
     </div>
   );
 };
