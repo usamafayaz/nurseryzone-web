@@ -19,7 +19,7 @@ const Login = () => {
       <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
         <div className="text-center">
           <img
-            src="src/assets/logo.png"
+            src="../assets/images/logo.png"
             alt="Nursery Zone Logo"
             className="w-20 h-20 mx-auto mb-4"
           />
