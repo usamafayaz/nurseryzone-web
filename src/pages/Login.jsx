@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import InputField from "../components/InputField";
-import Button from "../components/Button";
 import { Mail, Lock, ArrowRight, Leaf } from "lucide-react";
 
 const Login = () => {
@@ -60,7 +58,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email address"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ease-in-out"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg  transition-all duration-200 ease-in-out"
                 />
               </div>
 
@@ -74,7 +72,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ease-in-out"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg  transition-all duration-200 ease-in-out"
                 />
               </div>
             </div>

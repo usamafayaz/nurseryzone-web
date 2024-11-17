@@ -1,11 +1,8 @@
 import React from "react";
-import { Users, Mail, Phone, Calendar, Package, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Users, Mail, Phone, Calendar, Package } from "lucide-react";
 import { DUMMY_CUSTOMERS } from "../utils/dummyData";
 
 const CustomersScreen = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}

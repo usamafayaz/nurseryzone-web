@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Leaf, Calendar, Tag, DollarSign, Plus, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Leaf, Calendar, Tag, DollarSign, Plus } from "lucide-react";
 
 const ManagePlantsScreen = () => {
-  const navigate = useNavigate();
   const [plantData, setPlantData] = useState({
     name: "",
     season: "",
@@ -69,7 +67,7 @@ const ManagePlantsScreen = () => {
                     setPlantData({ ...plantData, name: e.target.value })
                   }
                   placeholder="Enter plant name"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ease-in-out"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
                 />
               </div>
               {error && !plantData.name && (
@@ -96,7 +94,7 @@ const ManagePlantsScreen = () => {
                     setPlantData({ ...plantData, season: e.target.value })
                   }
                   placeholder="Enter season"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ease-in-out"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
                 />
               </div>
               {error && !plantData.season && (
@@ -123,7 +121,7 @@ const ManagePlantsScreen = () => {
                     setPlantData({ ...plantData, type: e.target.value })
                   }
                   placeholder="Enter type"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ease-in-out"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
                 />
               </div>
               {error && !plantData.type && (
@@ -150,7 +148,7 @@ const ManagePlantsScreen = () => {
                     setPlantData({ ...plantData, price: e.target.value })
                   }
                   placeholder="Enter price"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 ease-in-out"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
                 />
               </div>
               {error && !plantData.price && (

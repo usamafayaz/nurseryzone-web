@@ -1,11 +1,8 @@
 import React from "react";
-import { DollarSign, Package, Calendar, User, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { DollarSign, Package, Calendar, User } from "lucide-react";
 import { DUMMY_ORDERS } from "../utils/dummyData";
 
 const OrderDetailsScreen = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}

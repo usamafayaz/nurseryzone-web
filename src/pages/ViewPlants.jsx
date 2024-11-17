@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Leaf, Edit, Trash2, ArrowLeft, Plus } from "lucide-react";
+import { Leaf, Edit, Trash2, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DUMMY_PLANTS } from "../utils/dummyData";
 
