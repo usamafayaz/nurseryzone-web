@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Leaf, Edit, Trash2, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { DUMMY_PLANTS } from "../utils/dummyData";
+import { DUMMY_PLANTS } from "../../../utils/dummyData";
 
-const ViewPlantsScreen = () => {
+const ViewPlants = () => {
   const navigate = useNavigate();
   const [plants, setPlants] = useState(DUMMY_PLANTS);
 
@@ -128,4 +128,4 @@ const ViewPlantsScreen = () => {
   );
 };
 
-export default ViewPlantsScreen;
+export default ViewPlants;

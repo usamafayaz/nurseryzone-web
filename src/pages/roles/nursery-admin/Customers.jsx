@@ -1,8 +1,8 @@
 import React from "react";
 import { Users, Mail, Phone, Calendar, Package } from "lucide-react";
-import { DUMMY_CUSTOMERS } from "../utils/dummyData";
+import { DUMMY_CUSTOMERS } from "../../../utils/dummyData";
 
-const CustomersScreen = () => {
+const CustomersList = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}
@@ -99,4 +99,4 @@ const CustomersScreen = () => {
   );
 };
 
-export default CustomersScreen;
+export default CustomersList;

@@ -1,8 +1,8 @@
 import React from "react";
 import { MessageSquare, Star } from "lucide-react";
-import { DUMMY_REVIEWS } from "../utils/dummyData";
+import { DUMMY_REVIEWS } from "../../../utils/dummyData";
 
-const ReviewsScreen = () => {
+const Reviews = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}
@@ -84,4 +84,4 @@ const ReviewsScreen = () => {
   );
 };
 
-export default ReviewsScreen;
+export default Reviews;
