@@ -14,6 +14,7 @@ import ChatBot from "../pages/roles/customer/ChatBot";
 import SuperAdminDashboard from "../pages/roles/super-admin/Dashboard";
 import RegisteredNurseries from "../pages/roles/super-admin/RegisteredNurseries";
 import NurseryRequests from "../pages/roles/super-admin/NurseryRequest";
+import CustomerDashboard from "../pages/roles/customer/Dashboard";
 
 const AppRouter = () => {
   return (
@@ -33,6 +34,7 @@ const AppRouter = () => {
         <Route path="/nursery/customers" element={<CustomersList />} />
 
         {/* Customer */}
+        <Route path="/customer/dashboard" element={<CustomerDashboard />} />
         <Route path="/chat-bot" element={<ChatBot />} />
         {/* Super Admin */}
         <Route path="/admin/dashboard" element={<SuperAdminDashboard />} />

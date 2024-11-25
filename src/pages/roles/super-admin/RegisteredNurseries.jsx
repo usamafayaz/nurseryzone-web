@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import {
-  ChevronLeft,
+  //   ChevronLeft,
   Leaf,
   Info,
-  MoreVertical,
-  Edit,
-  Trash2,
+  //   MoreVertical,
+  //   Edit,
+  //   Trash2,
   X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const RegisteredNurseries = () => {
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const [registeredNurseries, setRegisteredNurseries] = useState([
     {
       id: 1,
