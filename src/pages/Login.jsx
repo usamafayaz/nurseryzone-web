@@ -92,7 +92,7 @@ const Login = () => {
           <p className="text-center text-sm text-gray-600">
             New to Nursery Zone?{" "}
             <span
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/role-selection")}
               className="font-medium text-green-600 hover:text-green-500 cursor-pointer"
             >
               Create an account
