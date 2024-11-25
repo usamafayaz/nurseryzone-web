@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Leaf, Calendar, Tag, DollarSign, Plus } from "lucide-react";
 
-const ManagePlantsScreen = () => {
+const ManagePlants = () => {
   const [plantData, setPlantData] = useState({
     name: "",
     season: "",
@@ -179,4 +179,4 @@ const ManagePlantsScreen = () => {
   );
 };
 
-export default ManagePlantsScreen;
+export default ManagePlants;

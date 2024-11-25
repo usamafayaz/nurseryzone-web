@@ -10,7 +10,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-const DashboardScreen = () => {
+const NurseryDashboard = () => {
   const navigate = useNavigate();
 
   const menuItems = [
@@ -18,35 +18,35 @@ const DashboardScreen = () => {
       title: "Manage Plants",
       description: "Add, edit, and maintain your plant inventory",
       icon: <Leaf size={24} />,
-      screen: "/manage-plants",
+      screen: "/nursery/manage-plants",
       color: "bg-green-600",
     },
     {
       title: "View Plants",
       description: "Browse and search your plant collection",
       icon: <Eye size={24} />,
-      screen: "/view-plants",
+      screen: "/nursery/view-plants",
       color: "bg-green-600",
     },
     {
       title: "Orders",
       description: "Track and manage customer orders",
       icon: <ShoppingCart size={24} />,
-      screen: "/order-details",
+      screen: "/nursery/order-details",
       color: "bg-green-600",
     },
     {
       title: "Reviews",
       description: "Monitor customer feedback and ratings",
       icon: <Star size={24} />,
-      screen: "/reviews",
+      screen: "/nursery/reviews",
       color: "bg-green-600",
     },
     {
       title: "Customers",
       description: "View and manage customer information",
       icon: <Users size={24} />,
-      screen: "/customers",
+      screen: "/nursery/customers",
       color: "bg-green-600",
     },
     {
@@ -116,4 +116,4 @@ const DashboardScreen = () => {
   );
 };
 
-export default DashboardScreen;
+export default NurseryDashboard;

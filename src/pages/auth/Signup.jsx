@@ -35,7 +35,8 @@ const Signup = () => {
       address,
       contactNumber,
     });
-    navigate("/dashboard");
+    if (role === "Customer") navigate("/customer/dashboard");
+    else navigate("/nursery/dashboard");
   };
 
   return (

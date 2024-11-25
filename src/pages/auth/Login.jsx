@@ -9,7 +9,10 @@ const Login = () => {
 
   const handleLogin = () => {
     console.log("Login with:", { email, password });
-    navigate("/dashboard");
+
+    if (email === "admin") navigate("/admin/dashboard");
+    else if (email === "nursery") navigate("/nursery/dashboard");
+    else if (email === "customer") navigate("/customer/dashboard");
   };
 
   return (

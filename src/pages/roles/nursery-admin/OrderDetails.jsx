@@ -1,8 +1,8 @@
 import React from "react";
 import { DollarSign, Package, Calendar, User } from "lucide-react";
-import { DUMMY_ORDERS } from "../utils/dummyData";
+import { DUMMY_ORDERS } from "../../../utils/dummyData";
 
-const OrderDetailsScreen = () => {
+const OrderDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}
@@ -118,4 +118,4 @@ const OrderDetailsScreen = () => {
   );
 };
 
-export default OrderDetailsScreen;
+export default OrderDetails;
