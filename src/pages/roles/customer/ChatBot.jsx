@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { MessageSquare, Send, Copy, Bot, Leaf } from "lucide-react";
-import Gemini_key from "../../../utils/geminiKey";
+// import Gemini_key from "../../../utils/geminiKey";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
@@ -17,7 +17,7 @@ const ChatBot = () => {
     scrollToBottom();
   }, [messages, isLoading]);
 
-  const genAI = new GoogleGenerativeAI(Gemini_key);
+  const genAI = new GoogleGenerativeAI("Gemini_key");
 
   const handleSend = async () => {
     if (inputText.trim() === "") return;
