@@ -1,18 +1,44 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, ArrowRight, Leaf } from "lucide-react";
+import { useToaster } from "../../components/Toaster";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("customer1@example.com");
+  const [password, setPassword] = useState("userpassword");
   const navigate = useNavigate();
+  const addToast = useToaster();
 
-  const handleLogin = () => {
-    console.log("Login with:", { email, password });
+  const handleLogin = async () => {
+    try {
+      if (!email.trim() || !password.trim()) {
+        addToast("Please enter username and password", "info");
+        return;
+      }
+      console.log("Login with:", { email, password });
+      const response = await fetch(
+        `http://localhost:8000/api/login?email=${email}&password=${password}`
+      );
+      const result = await response.json();
 
-    if (email === "admin") navigate("/admin/dashboard");
-    else if (email === "nursery") navigate("/nursery/dashboard");
-    else if (email === "customer") navigate("/customer/dashboard");
+      if (!response.ok) {
+        addToast("Invalid credentials, please try again.", "error");
+        return;
+      }
+
+      console.log(result);
+      if (result) {
+        addToast("Login successful!", "success");
+        if (result.role.toLowerCase() === "admin")
+          navigate("/admin/dashboard", { state: result });
+        else if (result.role.toLowerCase() === "nursery")
+          navigate("/nursery/dashboard", { state: result });
+        else if (result.role.toLowerCase() === "customer")
+          navigate("/customer/dashboard", { state: result });
+      }
+    } catch (error) {
+      addToast("Something went wrong. Please try again later.", "error");
+    }
   };
 
   return (

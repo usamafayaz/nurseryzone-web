@@ -26,17 +26,29 @@ const Signup = () => {
     if (roleFromQuery) setRole(roleFromQuery);
   }, [location]);
 
-  const handleSignup = () => {
-    console.log("Signup with:", {
+  const handleSignup = async () => {
+    const data = {
       email,
-      password,
       name,
-      role,
       address,
-      contactNumber,
+      password_hash: password,
+      is_nursery: role === "Customer" ? false : true,
+      contact_number: contactNumber,
+    };
+    console.log("Signup with:", { data });
+
+    const response = await fetch("http://localhost:8000/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
-    if (role === "Customer") navigate("/customer/dashboard");
-    else navigate("/nursery/dashboard");
+    const result = await response.json();
+    console.log(result);
+
+    if (role === "Customer") navigate("/customer/dashboard", { state: data });
+    else navigate("/nursery/dashboard", { state: data });
   };
 
   return (
