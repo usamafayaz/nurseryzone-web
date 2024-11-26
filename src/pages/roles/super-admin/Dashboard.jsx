@@ -11,57 +11,6 @@ import {
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
-  const [nurseryRequests, setNurseryRequests] = useState([
-    {
-      id: 1,
-      name: "Green Thumb Nursery",
-      address: "123 Garden St, Springville, CA 94123",
-      contact_number: "(555) 123-4567",
-      email: "contact@greenthumb.com",
-      owner_name: "Sarah Johnson",
-      business_type: "Retail Nursery",
-      years_in_business: 5,
-      specialties: ["Succulents", "Rare Tropical Plants"],
-    },
-    {
-      id: 2,
-      name: "Urban Jungle Nursery",
-      address: "456 Botanical Ave, Portland, OR 97201",
-      contact_number: "(555) 987-6543",
-      email: "info@urbanjungle.com",
-      owner_name: "Michael Chen",
-      business_type: "Online Nursery",
-      years_in_business: 3,
-      specialties: ["Indoor Plants", "Plant Care Kits"],
-    },
-  ]);
-
-  const [registeredNurseries, setRegisteredNurseries] = useState([
-    {
-      id: 1,
-      name: "Bloom & Grow Nursery",
-      address: "789 Meadow Rd, Austin, TX 78701",
-      contact_number: "(555) 246-8135",
-    },
-  ]);
-
-  const handleRequestAction = (requestId, action) => {
-    const request = nurseryRequests.find((req) => req.id === requestId);
-    if (action === "accept") {
-      setRegisteredNurseries((prev) => [
-        ...prev,
-        {
-          id: request.id,
-          name: request.name,
-          address: request.address,
-          contact_number: request.contact_number,
-        },
-      ]);
-      setNurseryRequests((prev) => prev.filter((req) => req.id !== requestId));
-    } else {
-      setNurseryRequests((prev) => prev.filter((req) => req.id !== requestId));
-    }
-  };
 
   const menuItems = [
     {
@@ -82,7 +31,6 @@ const SuperAdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header Section */}
       <div className="bg-green-600 text-white py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -97,9 +45,7 @@ const SuperAdminDashboard = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Quick Access Menu */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {menuItems.map((item, index) => (
             <div
@@ -127,89 +73,6 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Nursery Requests Section */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Nursery Registration Requests
-          </h2>
-          {nurseryRequests.length === 0 ? (
-            <p className="text-gray-600">No pending nursery requests</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-green-50 text-green-800">
-                    <th className="p-3 text-left">Nursery Name</th>
-                    <th className="p-3 text-left">Address</th>
-                    <th className="p-3 text-left">Contact Number</th>
-                    <th className="p-3 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {nurseryRequests.map((request) => (
-                    <tr key={request.id} className="border-b">
-                      <td className="p-3">{request.name}</td>
-                      <td className="p-3">{request.address}</td>
-                      <td className="p-3">{request.contact_number}</td>
-                      <td className="p-3 text-center">
-                        <div className="flex justify-center space-x-2">
-                          <button
-                            onClick={() =>
-                              handleRequestAction(request.id, "accept")
-                            }
-                            className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition"
-                          >
-                            <CheckCircle2 size={20} />
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleRequestAction(request.id, "reject")
-                            }
-                            className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition"
-                          >
-                            <XCircle size={20} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-
-        {/* Registered Nurseries Section */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Registered Nurseries
-          </h2>
-          {registeredNurseries.length === 0 ? (
-            <p className="text-gray-600">No nurseries registered yet</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-green-50 text-green-800">
-                    <th className="p-3 text-left">Nursery Name</th>
-                    <th className="p-3 text-left">Address</th>
-                    <th className="p-3 text-left">Contact Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {registeredNurseries.map((nursery) => (
-                    <tr key={nursery.id} className="border-b">
-                      <td className="p-3">{nursery.name}</td>
-                      <td className="p-3">{nursery.address}</td>
-                      <td className="p-3">{nursery.contact_number}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
         </div>
       </div>
 

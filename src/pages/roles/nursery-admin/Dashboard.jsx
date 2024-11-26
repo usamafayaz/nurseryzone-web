@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Leaf,
   Eye,
@@ -12,7 +12,8 @@ import {
 
 const NurseryDashboard = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const user = location.state;
   const menuItems = [
     {
       title: "Manage Plants",
@@ -66,7 +67,7 @@ const NurseryDashboard = () => {
           <div className="flex items-center space-x-4">
             <Leaf size={32} className="text-white" />
             <div>
-              <h1 className="text-3xl font-bold">Nursery Zone Dashboard</h1>
+              <h1 className="text-3xl font-bold">{user.name}</h1>
               <p className="text-green-100 mt-1">
                 Manage your botanical business with ease
               </p>

@@ -9,7 +9,7 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const plants = [
   {
@@ -94,10 +94,12 @@ const plants = [
 
 const CustomerDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cart, setCart] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [screen, setScreen] = useState("dashboard");
+  const user = location.state;
 
   const addToCart = (plant, quantity) => {
     const existingItem = cart.find((item) => item.id === plant.id);
@@ -304,7 +306,7 @@ const CustomerDashboard = () => {
           <div className="flex items-center space-x-4">
             <Leaf size={32} className="text-white" />
             <div>
-              <h1 className="text-xl font-bold">Plant Marketplace</h1>
+              <h1 className="text-xl font-bold">Hello, {user.name}</h1>
               <p className="text-green-100 mt-1">
                 Discover your perfect green companion
               </p>

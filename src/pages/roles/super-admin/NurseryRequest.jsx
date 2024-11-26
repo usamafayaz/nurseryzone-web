@@ -1,41 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Leaf, Info, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const NurseryRequests = () => {
-  const navigate = useNavigate();
-  const [nurseryRequests, setNurseryRequests] = useState([
-    {
-      id: 1,
-      name: "Green Thumb Nursery",
-      address: "123 Garden St, Springville, CA 94123",
-      contact_number: "(555) 123-4567",
-      email: "contact@greenthumb.com",
-      owner_name: "Sarah Johnson",
-      business_type: "Retail Nursery",
-      years_in_business: 5,
-      specialties: ["Succulents", "Rare Tropical Plants"],
-      documents: ["Business License", "Tax ID", "Nursery Certification"],
-    },
-    {
-      id: 2,
-      name: "Urban Jungle Nursery",
-      address: "456 Botanical Ave, Portland, OR 97201",
-      contact_number: "(555) 987-6543",
-      email: "info@urbanjungle.com",
-      owner_name: "Michael Chen",
-      business_type: "Online Nursery",
-      years_in_business: 3,
-      specialties: ["Indoor Plants", "Plant Care Kits"],
-      documents: ["Business Registration", "Sales Tax Permit"],
-    },
-  ]);
-
   const [selectedNursery, setSelectedNursery] = useState(null);
+  const [nurseryRequests, setNurseryRequests] = useState([]);
 
-  const handleRequestAction = (requestId, action) => {
-    setNurseryRequests((prev) => prev.filter((req) => req.id !== requestId));
+  useEffect(() => {
+    getNurseryRequests();
+  }, []);
+
+  const handleRequestAction = async (nurseryId, action) => {
+    console.log(typeof nurseryId);
+    console.log(nurseryId);
+
+    setNurseryRequests((prev) =>
+      prev.filter((req) => req.nursery_id !== nurseryId)
+    );
     setSelectedNursery(null);
+    const is_accepted = action === "accept" ? true : false;
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/nursery/request?nursery_id=${nurseryId}&is_accepted=${is_accepted}`,
+        {
+          method: "POST",
+        }
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getNurseryRequests = async () => {
+    console.log("Fetching Data from DB");
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/nursery/request?pending_request=true&skip=0&limit=20"
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setNurseryRequests(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderNurseryModal = (nursery) => (
@@ -55,7 +65,9 @@ const NurseryRequests = () => {
           <div className="flex space-x-2">
             <div className="relative group">
               <button
-                onClick={() => handleRequestAction(nursery.id, "accept")}
+                onClick={() =>
+                  handleRequestAction(nursery.nursery_id, "accept")
+                }
                 className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition"
               >
                 <CheckCircle2 size={20} />
@@ -66,7 +78,9 @@ const NurseryRequests = () => {
             </div>
             <div className="relative group">
               <button
-                onClick={() => handleRequestAction(nursery.id, "reject")}
+                onClick={() =>
+                  handleRequestAction(nursery.nursery_id, "reject")
+                }
                 className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition"
               >
                 <XCircle size={20} />
@@ -94,35 +108,6 @@ const NurseryRequests = () => {
           <div>
             <p className="font-semibold text-gray-700">Address</p>
             <p className="text-gray-600">{nursery.address}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Owner Name</p>
-            <p className="text-gray-600">{nursery.owner_name}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Business Type</p>
-            <p className="text-gray-600">{nursery.business_type}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Years in Business</p>
-            <p className="text-gray-600">{nursery.years_in_business}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Specialties</p>
-            <p className="text-gray-600">{nursery.specialties.join(", ")}</p>
-          </div>
-          <div className="md:col-span-2">
-            <p className="font-semibold text-gray-700">Submitted Documents</p>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {nursery.documents.map((doc, index) => (
-                <span
-                  key={index}
-                  className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"
-                >
-                  {doc}
-                </span>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -180,7 +165,7 @@ const NurseryRequests = () => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleRequestAction(request.id, "accept");
+                              handleRequestAction(request.nursery_id, "accept");
                             }}
                             className="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition"
                           >
@@ -189,7 +174,7 @@ const NurseryRequests = () => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleRequestAction(request.id, "reject");
+                              handleRequestAction(request.nursery_id, "reject");
                             }}
                             className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition"
                           >
