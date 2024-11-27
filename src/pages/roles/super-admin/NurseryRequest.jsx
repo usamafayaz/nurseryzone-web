@@ -153,7 +153,7 @@ const NurseryRequests = () => {
                 <tbody>
                   {nurseryRequests.map((request) => (
                     <tr
-                      key={request.id}
+                      key={request.nursery_id}
                       className="border-b hover:bg-green-50 cursor-pointer"
                       onClick={() => setSelectedNursery(request)}
                     >

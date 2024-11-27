@@ -1,29 +1,62 @@
 import React, { useState } from "react";
-import { Leaf, Calendar, Tag, DollarSign, Plus } from "lucide-react";
+import { Home, FileText, DollarSign, Box, Image, Plus } from "lucide-react";
+import { useToaster } from "../../../components/Toaster";
+import { useLocation } from "react-router-dom";
 
 const ManagePlants = () => {
   const [plantData, setPlantData] = useState({
     name: "",
-    season: "",
-    type: "",
+    description: "",
     price: "",
+    stock: "",
+    image: null,
   });
+  const addToast = useToaster();
+  const location = useLocation();
+  const nursery = location.state;
 
-  const [error, setError] = useState("");
-
-  const handleAddPlant = () => {
+  const handleAddPlant = async () => {
     if (
       !plantData.name ||
-      !plantData.season ||
-      !plantData.type ||
-      !plantData.price
+      !plantData.price ||
+      !plantData.image ||
+      !plantData.description ||
+      !plantData.stock
     ) {
-      setError("All fields are required.");
+      addToast("Please fill all the fields", "error");
       return;
     }
-    setError("");
-    alert("Plant added successfully");
-    setPlantData({ name: "", season: "", type: "", price: "" });
+    // Create FormData
+    const formData = new FormData();
+    formData.append("nursery_id", nursery.user_id);
+    formData.append("name", plantData.name);
+    formData.append("description", plantData.description);
+    formData.append("price", plantData.price);
+    formData.append("stock", plantData.stock);
+    formData.append("image", plantData.image);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/nursery/plant", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        addToast("Plant added successfully", "success");
+        setPlantData({
+          name: "",
+          description: "",
+          price: "",
+          stock: "",
+          image: null,
+        });
+      } else {
+        const data = await response.json();
+        addToast(data.message || "Failed to add plant", "error");
+      }
+    } catch (err) {
+      addToast("An error occurred. Please try again", "error");
+    }
   };
 
   return (
@@ -32,7 +65,7 @@ const ManagePlants = () => {
       <div className="bg-green-600 text-white py-4 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center space-x-4">
-            <Leaf size={32} />
+            <Home size={32} />
             <div>
               <h1 className="text-xl font-bold">Manage Plants</h1>
               <p className="text-green-100 mt-1">
@@ -50,13 +83,13 @@ const ManagePlants = () => {
           <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
 
           <div className="space-y-6">
-            {/* Plant Name Input */}
+            {/* Name Input */}
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Plant Name
+                Name *
               </label>
               <div className="relative">
-                <Leaf
+                <FileText
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                   size={20}
                 />
@@ -70,71 +103,35 @@ const ManagePlants = () => {
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
                 />
               </div>
-              {error && !plantData.name && (
-                <p className="mt-1 text-sm text-red-600">
-                  This field is required
-                </p>
-              )}
             </div>
 
-            {/* Season Input */}
+            {/* Description Input */}
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Season
+                Description *
               </label>
               <div className="relative">
-                <Calendar
+                <FileText
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                   size={20}
                 />
                 <input
                   type="text"
-                  value={plantData.season}
+                  value={plantData.description}
                   onChange={(e) =>
-                    setPlantData({ ...plantData, season: e.target.value })
+                    setPlantData({ ...plantData, description: e.target.value })
                   }
-                  placeholder="Enter season"
+                  placeholder="Enter description"
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                />
+                  rows="3"
+                ></input>
               </div>
-              {error && !plantData.season && (
-                <p className="mt-1 text-sm text-red-600">
-                  This field is required
-                </p>
-              )}
-            </div>
-
-            {/* Type Input */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Type
-              </label>
-              <div className="relative">
-                <Tag
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="text"
-                  value={plantData.type}
-                  onChange={(e) =>
-                    setPlantData({ ...plantData, type: e.target.value })
-                  }
-                  placeholder="Enter type"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                />
-              </div>
-              {error && !plantData.type && (
-                <p className="mt-1 text-sm text-red-600">
-                  This field is required
-                </p>
-              )}
             </div>
 
             {/* Price Input */}
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price
+                Price *
               </label>
               <div className="relative">
                 <DollarSign
@@ -151,11 +148,50 @@ const ManagePlants = () => {
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
                 />
               </div>
-              {error && !plantData.price && (
-                <p className="mt-1 text-sm text-red-600">
-                  This field is required
-                </p>
-              )}
+            </div>
+
+            {/* Stock Input */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Stock *
+              </label>
+              <div className="relative">
+                <Box
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
+                <input
+                  type="number"
+                  min="0"
+                  value={plantData.stock}
+                  onChange={(e) =>
+                    setPlantData({ ...plantData, stock: e.target.value })
+                  }
+                  placeholder="Enter stock quantity"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
+                />
+              </div>
+            </div>
+
+            {/* Image Input */}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Image *
+              </label>
+              <div className="relative">
+                <Image
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  size={20}
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setPlantData({ ...plantData, image: e.target.files[0] })
+                  }
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
+                />
+              </div>
             </div>
 
             {/* Submit Button */}
@@ -169,12 +205,6 @@ const ManagePlants = () => {
           </div>
         </div>
       </div>
-
-      {/* Decorative circles */}
-      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
-      <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
-      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
-      <div className="fixed -top-28 -right-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
     </div>
   );
 };
