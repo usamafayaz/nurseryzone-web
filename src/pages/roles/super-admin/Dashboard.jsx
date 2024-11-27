@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Building2,
-  CheckCircle2,
-  XCircle,
-  Users,
-  ArrowRight,
-  Leaf,
-} from "lucide-react";
+import { Building2, Users, ArrowRight, Leaf } from "lucide-react";
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();

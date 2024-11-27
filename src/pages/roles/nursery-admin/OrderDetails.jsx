@@ -1,8 +1,11 @@
 import React from "react";
 import { DollarSign, Package, Calendar, User } from "lucide-react";
 import { DUMMY_ORDERS } from "../../../utils/dummyData";
+import { useLocation } from "react-router-dom";
 
 const OrderDetails = () => {
+  const location = useLocation();
+  const nursery = location.state;
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}
