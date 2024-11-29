@@ -104,8 +104,8 @@ const ViewPlants = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}
-      <div className="bg-green-600 text-white py-4 px-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="bg-green-600 text-white py-4 px-10">
+        <div className="mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Leaf size={32} />
@@ -130,7 +130,7 @@ const ViewPlants = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className=" mx-auto px-10 py-8">
         {loading ? (
           <div className="text-center py-12">
             <Leaf size={48} className="mx-auto text-gray-400 mb-4" />
@@ -139,7 +139,7 @@ const ViewPlants = () => {
             </p>
           </div>
         ) : plants.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-3">
             {plants.map((plant) => (
               <div
                 key={plant.plant_id}
