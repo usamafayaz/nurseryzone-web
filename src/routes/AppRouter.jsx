@@ -1,9 +1,11 @@
 // src/routes/AppRouter.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Login from "../pages/auth/Login";
 import Signup from "../pages/auth/Signup";
 import SignupLanding from "../pages/auth/SignupLanding";
+
 import NurseryDashboard from "../pages/roles/nursery-admin/Dashboard";
 import ManagePlants from "../pages/roles/nursery-admin/ManagePlants";
 import ViewPlants from "../pages/roles/nursery-admin/ViewPlants";
@@ -11,9 +13,11 @@ import OrderDetails from "../pages/roles/nursery-admin/OrderDetails";
 import Reviews from "../pages/roles/nursery-admin/Reviews";
 import CustomersList from "../pages/roles/nursery-admin/Customers";
 import ChatBot from "../pages/roles/customer/ChatBot";
+
 import SuperAdminDashboard from "../pages/roles/super-admin/Dashboard";
 import RegisteredNurseries from "../pages/roles/super-admin/RegisteredNurseries";
 import NurseryRequests from "../pages/roles/super-admin/NurseryRequest";
+
 import CustomerDashboard from "../pages/roles/customer/Dashboard";
 
 const AppRouter = () => {

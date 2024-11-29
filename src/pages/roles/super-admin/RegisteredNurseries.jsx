@@ -1,54 +1,25 @@
-import React, { useState } from "react";
-import {
-  //   ChevronLeft,
-  Leaf,
-  Info,
-  //   MoreVertical,
-  //   Edit,
-  //   Trash2,
-  X,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Leaf, Info, X } from "lucide-react";
 
 const RegisteredNurseries = () => {
-  //   const navigate = useNavigate();
-  const [registeredNurseries, setRegisteredNurseries] = useState([
-    {
-      id: 1,
-      name: "Bloom & Grow Nursery",
-      address: "789 Meadow Rd, Austin, TX 78701",
-      contact_number: "(555) 246-8135",
-      email: "info@bloomandgrow.com",
-      owner_name: "Emily Rodriguez",
-      business_type: "Retail Nursery",
-      years_in_business: 7,
-      specialties: ["Native Plants", "Landscaping Supplies"],
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Evergreen Nurseries",
-      address: "321 Forest Lane, Seattle, WA 98101",
-      contact_number: "(555) 135-7924",
-      email: "contact@evergreennurseries.com",
-      owner_name: "David Kim",
-      business_type: "Wholesale Nursery",
-      years_in_business: 12,
-      specialties: ["Tree Saplings", "Commercial Landscaping"],
-      status: "Active",
-    },
-  ]);
-
+  const [registeredNurseries, setRegisteredNurseries] = useState([]);
   const [selectedNursery, setSelectedNursery] = useState(null);
-  //   const [activeOptionsMenu, setActiveOptionsMenu] = useState(null);
-
-  //   const handleDeleteNursery = (nurseryId) => {
-  //     setRegisteredNurseries((prev) =>
-  //       prev.filter((nursery) => nursery.id !== nurseryId)
-  //     );
-  //     setSelectedNursery(null);
-  //     setActiveOptionsMenu(null);
-  //   };
+  useEffect(() => {
+    getNurseries();
+  }, []);
+  const getNurseries = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/nursery/request?pending_request=false&skip=0&limit=20"
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setRegisteredNurseries(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const renderNurseryModal = (nursery) => (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -79,28 +50,6 @@ const RegisteredNurseries = () => {
           <div>
             <p className="font-semibold text-gray-700">Address</p>
             <p className="text-gray-600">{nursery.address}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Owner Name</p>
-            <p className="text-gray-600">{nursery.owner_name}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Business Type</p>
-            <p className="text-gray-600">{nursery.business_type}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Years in Business</p>
-            <p className="text-gray-600">{nursery.years_in_business}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Specialties</p>
-            <p className="text-gray-600">{nursery.specialties.join(", ")}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-700">Status</p>
-            <span className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm">
-              {nursery.status}
-            </span>
           </div>
         </div>
       </div>
@@ -168,41 +117,6 @@ const RegisteredNurseries = () => {
                       >
                         {nursery.contact_number}
                       </td>
-                      {/* <td className="p-3 text-center">
-                        <div className="relative">
-                          <button
-                            onClick={() =>
-                              setActiveOptionsMenu(
-                                activeOptionsMenu === nursery.id
-                                  ? null
-                                  : nursery.id
-                              )
-                            }
-                            className="hover:bg-green-100 p-2 rounded-full"
-                          >
-                            <MoreVertical size={20} />
-                          </button>
-                          {activeOptionsMenu === nursery.id && (
-                            <div className="absolute right-0 top-full z-10 bg-white shadow-md rounded-md border mt-2">
-                              <button
-                                className="flex items-center w-full p-2 hover:bg-green-50 text-sm"
-                                onClick={() => {
-                                  // TODO: Implement edit functionality
-                                  console.log("Edit nursery");
-                                }}
-                              >
-                                <Edit size={16} className="mr-2" /> Edit
-                              </button>
-                              <button
-                                className="flex items-center w-full p-2 hover:bg-red-50 text-sm text-red-600"
-                                onClick={() => handleDeleteNursery(nursery.id)}
-                              >
-                                <Trash2 size={16} className="mr-2" /> Delete
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -211,7 +125,6 @@ const RegisteredNurseries = () => {
           )}
         </div>
 
-        {/* Selected Nursery Details Modal */}
         {selectedNursery && renderNurseryModal(selectedNursery)}
       </div>
     </div>
