@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Leaf, ShoppingCart, Search } from "lucide-react";
+import { Leaf, ShoppingCart, Search, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../../../store/cartStore";
 import ProductCard from "../../../components/ProductCard";
+import Header from "./Header";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [cart, setCart] = useState([]);
+
+  // Use Zustand hook to get cart items and total items
+  const cart = useCartStore((state) => state.cart);
+  const totalCartItems = useCartStore((state) => state.getTotalItems());
 
   useEffect(() => {
     fetchPlants();
@@ -28,96 +33,77 @@ const Dashboard = () => {
     }
   };
 
-  const addToCart = (plant, quantity = 1) => {
-    const existingItem = cart.find((item) => item.plant_id === plant.plant_id);
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
-          item.plant_id === plant.plant_id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...plant, quantity }]);
-    }
-  };
-
   const filteredPlants = plants.filter((plant) =>
     plant.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header */}
-      <div className="bg-green-600 text-white py-4 px-6">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <Leaf size={32} className="text-white" />
-            <div>
-              <h1 className="text-xl font-bold">Plant Paradise</h1>
-              <p className="text-green-100 mt-1">
-                Discover your perfect green companion
-              </p>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#F5F5F5]">
+      <Header />
 
-          {/* Header Icons */}
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => navigate("/chat-bot")}
-              className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
-            >
-              Plant Assistant
-            </button>
-
-            <button
-              onClick={() => navigate("/cart")}
-              className="text-white relative"
-            >
-              <ShoppingCart size={24} />
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Plant Grid */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Search and Filter Section */}
+        <div className="mb-8 flex items-center space-x-4">
+          <div className="relative flex-grow">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search size={20} className="text-[#4A4A4A] opacity-50" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search plants by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-xl 
+                bg-white 
+                border border-[#E0E0E0] 
+                text-[#2C3E50] 
+                focus:outline-none 
+                focus:ring-2 
+                focus:ring-[#2ECC71] 
+                transition duration-300 
+                shadow-sm"
+            />
+          </div>
+
+          <button
+            className="
+            bg-[#2ECC71] 
+            text-white 
+            p-3 
+            rounded-xl 
+            hover:bg-[#27AE60] 
+            transition 
+            flex 
+            items-center 
+            justify-center
+            shadow-md
+          "
+          >
+            <Filter size={20} />
+          </button>
+        </div>
+
+        {/* Loading State */}
         {loading ? (
           <div className="text-center py-10">
-            <p className="text-gray-600">Loading plants...</p>
+            <p className="text-[#7F8C8D]">Loading plants...</p>
           </div>
         ) : (
-          <>
-            {/* Search Input */}
-            <div className="relative mx-4 mb-4">
-              <input
-                type="text"
-                placeholder="Search plants..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-3 py-2 rounded-lg text-black bg-stone-200 w-full"
-              />
-              <Search
-                size={20}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-              />
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {filteredPlants.map((plant) => (
-                <ProductCard
-                  key={plant.plant_id}
-                  plant={plant}
-                  onAddToCart={addToCart}
-                />
-              ))}
-            </div>
-          </>
+          <div className="grid md:grid-cols-3 gap-6">
+            {filteredPlants.map((plant) => (
+              <ProductCard key={plant.plant_id} plant={plant} />
+            ))}
+
+            {/* Empty State */}
+            {filteredPlants.length === 0 && (
+              <div className="col-span-full text-center py-10">
+                <p className="text-[#7F8C8D] text-lg">
+                  No plants found matching your search
+                </p>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

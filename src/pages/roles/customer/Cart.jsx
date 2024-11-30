@@ -1,55 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ShoppingCart, ChevronLeft, Plus, Minus } from "lucide-react";
+import useCartStore from "../../../store/cartStore";
 
 const CartScreen = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
-    // Check if a new item was added from product details
-    if (location.state?.plant) {
-      const { plant, quantity } = location.state;
-      addToCart(plant, quantity);
-    }
-  }, [location.state]);
-
-  const addToCart = (plant, quantity = 1) => {
-    const existingItem = cart.find((item) => item.plant_id === plant.plant_id);
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
-          item.plant_id === plant.plant_id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...plant, quantity }]);
-    }
-  };
-
-  const updateQuantity = (plantId, newQuantity) => {
-    if (newQuantity === 0) {
-      removeFromCart(plantId);
-    } else {
-      setCart(
-        cart.map((item) =>
-          item.plant_id === plantId ? { ...item, quantity: newQuantity } : item
-        )
-      );
-    }
-  };
-
-  const removeFromCart = (plantId) => {
-    setCart(cart.filter((item) => item.plant_id !== plantId));
-  };
-
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const cart = useCartStore((state) => state.cart);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const totalPrice = useCartStore((state) => state.getTotalPrice());
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
@@ -86,39 +45,68 @@ const CartScreen = () => {
                     <p className="text-gray-500">${item.price}</p>
                   </div>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center">
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.plant_id, item.quantity - 1)
+                      }
+                      className="bg-green-50 p-1 rounded-full"
+                    >
+                      <Minus size={16} className="text-green-600" />
+                    </button>
+                    <span className="mx-2 text-lg">{item.quantity}</span>
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.plant_id, item.quantity + 1)
+                      }
+                      className="bg-green-50 p-1 rounded-full"
+                    >
+                      <Plus size={16} className="text-green-600" />
+                    </button>
+                  </div>
                   <button
-                    onClick={() =>
-                      updateQuantity(item.plant_id, item.quantity - 1)
-                    }
-                    className="bg-green-50 p-1 rounded-full"
+                    onClick={() => removeFromCart(item.plant_id)}
+                    className="text-red-500 hover:text-red-700"
                   >
-                    <Minus size={16} className="text-green-600" />
-                  </button>
-                  <span className="mx-2 text-lg">{item.quantity}</span>
-                  <button
-                    onClick={() =>
-                      updateQuantity(item.plant_id, item.quantity + 1)
-                    }
-                    className="bg-green-50 p-1 rounded-full"
-                  >
-                    <Plus size={16} className="text-green-600" />
+                    Remove
                   </button>
                 </div>
               </div>
             ))}
             <div className="mt-6">
               <div className="flex justify-between mb-4">
-                <span className="text-xl text-gray-700">Total</span>
+                <span className="text-xl text-gray-700">Subtotal</span>
                 <span className="text-2xl font-bold">
                   ${totalPrice.toFixed(2)}
                 </span>
               </div>
+              <div className="flex justify-between mb-4">
+                <span className="text-lg text-gray-600">Shipping</span>
+                <span className="text-lg text-gray-600">
+                  {totalPrice > 50 ? "Free" : "$5.00"}
+                </span>
+              </div>
+              <div className="border-t pt-4 flex justify-between">
+                <span className="text-xl font-bold text-gray-900">Total</span>
+                <span className="text-2xl font-bold text-green-600">
+                  $
+                  {totalPrice > 50
+                    ? totalPrice.toFixed(2)
+                    : (totalPrice + 5).toFixed(2)}
+                </span>
+              </div>
               <button
                 onClick={() =>
-                  navigate("/checkout", { state: { cart, totalPrice } })
+                  navigate("/checkout", {
+                    state: {
+                      cart,
+                      totalPrice: totalPrice > 50 ? totalPrice : totalPrice + 5,
+                    },
+                  })
                 }
-                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition mt-4"
+                disabled={cart.length === 0}
               >
                 Proceed to Checkout
               </button>
