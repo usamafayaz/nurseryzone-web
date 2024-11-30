@@ -1,9 +1,11 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../store/cartStore";
 
-const ProductCard = ({ plant, onAddToCart }) => {
+const ProductCard = ({ plant }) => {
   const navigate = useNavigate();
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const handleViewDetails = () => {
     navigate(`/product/${plant.plant_id}`, { state: { plant } });
@@ -35,7 +37,10 @@ const ProductCard = ({ plant, onAddToCart }) => {
             View Details <ChevronRight size={16} />
           </button>
           <button
-            onClick={() => onAddToCart(plant, 1)}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent navigating to details
+              addToCart(plant, 1);
+            }}
             disabled={plant.stock === 0}
             className="bg-green-50 text-green-600 px-3 py-1 rounded-full hover:bg-green-100 disabled:opacity-50"
           >
