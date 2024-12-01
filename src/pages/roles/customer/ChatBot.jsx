@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { MessageSquare, Send, Copy, Bot, Leaf } from "lucide-react";
+import { MessageSquare, Send, Copy, Bot, Leaf, Sparkles } from "lucide-react";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const chatSessionRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -16,13 +17,31 @@ const ChatBot = () => {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  // Initialize AI only once
   const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
+
+  // Initialize chat session
+  const initializeChatSession = async () => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    chatSessionRef.current = model.startChat({
+      history: messages.map((msg) => ({
+        role: msg.user ? "user" : "model",
+        parts: [{ text: msg.text }],
+      })),
+      generationConfig: {
+        maxOutputTokens: 500,
+      },
+    });
+  };
 
   const handleSend = async () => {
     if (inputText.trim() === "") return;
-    if (inputText.trim() === "cls") {
+
+    // Special command to clear chat
+    if (inputText.trim().toLowerCase() === "cls") {
       setMessages([]);
       setInputText("");
+      chatSessionRef.current = null;
       return;
     }
 
@@ -32,16 +51,24 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const result = await model.generateContent(inputText);
-      const response = await result.response;
+      // Initialize or reinitialize chat session
+      if (!chatSessionRef.current) {
+        await initializeChatSession();
+      }
+
+      // Send message and get response
+      const result = await chatSessionRef.current.sendMessage(inputText);
+      const response = result.response;
+
       const aiResponse = {
         id: Date.now() + 1,
         text: response.text(),
         user: false,
       };
 
+      // Update messages and reinitialize chat session to maintain context
       setMessages((prevMessages) => [...prevMessages, aiResponse]);
+      await initializeChatSession();
     } catch (error) {
       console.error("Error chatting with Gemini:", error);
       const errorResponse = {
@@ -56,43 +83,48 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header Section */}
-      <div className="bg-green-600 text-white py-4 px-6">
+    <div className="bg-gradient-to-br from-emerald-50 to-white relative overflow-hidden">
+      {/* Decorative Gradient Overlay */}
+      <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-emerald-200 to-green-100 pointer-events-none" />
+
+      {/* Header Section with Subtle Elevation */}
+      <div className="bg-emerald-600 text-white py-4 px-6 shadow-md relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center space-x-4">
-            <Leaf size={32} />
+            <Sparkles size={32} className="text-emerald-200" />
             <div>
-              <h1 className="text-xl font-bold">Plant Assistant</h1>
-              <p className="text-green-100 mt-1">
-                Your personal gardening companion
+              <h1 className="text-2xl font-bold tracking-tight">
+                AI Plant Companion
+              </h1>
+              <p className="text-emerald-100 mt-1 text-sm">
+                Your intelligent gardening assistant
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Chat Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden min-h-[390px] flex flex-col">
-          {/* Decorative element */}
-          <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
+      {/* Main Chat Container */}
+      <div className="max-w-4xl mx-auto px-6 py-8 relative z-20">
+        <div className="bg-white rounded-2xl shadow-2xl border border-emerald-50 p-8 relative overflow-hidden min-h-[500px] flex flex-col">
+          {/* Subtle Accent Border */}
+          <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600" />
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto space-y-4 mb-6">
+          <div className="flex-1 overflow-y-auto space-y-4 mb-6 pr-2">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="flex justify-center mb-4 text-green-600">
-                    <Bot size={48} />
+                  <div className="flex justify-center mb-4 text-emerald-600">
+                    <Bot size={56} strokeWidth={1.5} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                    Welcome to Plant Assistant
+                  <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                    Plant Intelligence Awaits
                   </h2>
-                  <p className="text-gray-600">
-                    Curious about plants? 🌿 Ask me anything about plant care,
-                    types of plants, or gardening tips, and I'll provide you
-                    with helpful insights!
+                  <p className="text-gray-600 max-w-md mx-auto">
+                    Explore the world of plants with our AI companion. Ask about
+                    care tips, plant identification, gardening techniques, and
+                    more – your green journey starts here! 🌿
                   </p>
                 </div>
               </div>
@@ -105,9 +137,9 @@ const ChatBot = () => {
                   }`}
                 >
                   <div
-                    className={`max-w-[80%] p-4 rounded-xl shadow-sm ${
+                    className={`max-w-[85%] p-4 rounded-xl shadow-sm transition-all ${
                       message.user
-                        ? "bg-green-600 text-white"
+                        ? "bg-emerald-600 text-white"
                         : "bg-gray-50 border border-gray-100"
                     }`}
                   >
@@ -118,8 +150,9 @@ const ChatBot = () => {
             )}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-300 border-t-green-600" />
+                <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-300 border-t-emerald-600" />
+                  <span className="text-gray-600 text-sm">Thinking...</span>
                 </div>
               </div>
             )}
@@ -137,13 +170,13 @@ const ChatBot = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Ask about plants..."
-              className="w-full pl-12 pr-16 py-3 border border-gray-300 rounded-lg  transition-all duration-200 ease-in-out"
+              placeholder="Ask about plants, gardening, or care tips..."
+              className="w-full pl-12 pr-16 py-3 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-300 transition-all duration-200 ease-in-out"
             />
             <button
               onClick={handleSend}
               disabled={isLoading || !inputText.trim()}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send size={20} />
             </button>
@@ -151,11 +184,9 @@ const ChatBot = () => {
         </div>
       </div>
 
-      {/* Decorative circles */}
-      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
-      <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
-      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
-      <div className="fixed -top-28 -right-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
+      {/* Decorative Circles */}
+      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-emerald-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-emerald-600 border-opacity-10 rounded-full" />
     </div>
   );
 };
