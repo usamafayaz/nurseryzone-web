@@ -1,11 +1,11 @@
 import React from "react";
 import { MessageSquare, Star } from "lucide-react";
 import { DUMMY_REVIEWS } from "../../../utils/dummyData";
-import { useLocation } from "react-router-dom";
 
 const Reviews = () => {
-  const location = useLocation();
-  const nursery = location.state;
+  let nursery = localStorage.getItem("userData");
+  nursery = JSON.parse(nursery);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}

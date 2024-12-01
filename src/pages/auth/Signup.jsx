@@ -44,11 +44,12 @@ const Signup = () => {
       },
       body: JSON.stringify(data),
     });
-    const result = await response.json();
-    console.log(result);
 
-    if (role === "Customer") navigate("/customer/dashboard", { state: data });
-    else navigate("/nursery/dashboard", { state: data });
+    if (response.ok) {
+      localStorage.setItem("userData", JSON.stringify(data));
+      if (role === "Customer") navigate("/customer/dashboard");
+      else navigate("/");
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Leaf, ShoppingCart, Search } from "lucide-react";
+import { Leaf, ShoppingCart, Search, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../../store/cartStore";
 
@@ -43,6 +43,14 @@ const Header = ({ onSearchChange, searchTerm }) => {
             className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
           >
             Plant Assistant
+          </button>
+
+          {/* New Order History Button */}
+          <button
+            onClick={() => navigate("/order-history")}
+            className="text-white hover:bg-green-700 p-2 rounded-lg transition"
+          >
+            <List size={24} />
           </button>
 
           <button

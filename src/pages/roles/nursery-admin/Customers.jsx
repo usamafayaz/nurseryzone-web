@@ -1,11 +1,11 @@
 import React from "react";
 import { Users, Mail, Phone, Calendar, Package } from "lucide-react";
 import { DUMMY_CUSTOMERS } from "../../../utils/dummyData";
-import { useLocation } from "react-router-dom";
 
 const CustomersList = () => {
-  const location = useLocation();
-  const nursery = location.state;
+  let nursery = localStorage.getItem("userData");
+  nursery = JSON.parse(nursery);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}

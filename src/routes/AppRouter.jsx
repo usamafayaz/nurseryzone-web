@@ -12,6 +12,7 @@ import ViewPlants from "../pages/roles/nursery-admin/ViewPlants";
 import OrderDetails from "../pages/roles/nursery-admin/OrderDetails";
 import Reviews from "../pages/roles/nursery-admin/Reviews";
 import CustomersList from "../pages/roles/nursery-admin/Customers";
+import NurseryPendingApproval from "../pages/roles/nursery-admin/NurseryApproval";
 import ChatBot from "../pages/roles/customer/ChatBot";
 
 import SuperAdminDashboard from "../pages/roles/super-admin/Dashboard";
@@ -22,6 +23,7 @@ import CustomerDashboard from "../pages/roles/customer/Dashboard";
 import CartScreen from "../pages/roles/customer/Cart";
 import ProductDetails from "../pages/roles/customer/ProductDetails";
 import CheckoutScreen from "../pages/roles/customer/Checkout";
+import OrderHistory from "../pages/roles/customer/OrderHistory";
 
 const AppRouter = () => {
   return (
@@ -39,6 +41,10 @@ const AppRouter = () => {
         <Route path="/nursery/order-details" element={<OrderDetails />} />
         <Route path="/nursery/reviews" element={<Reviews />} />
         <Route path="/nursery/customers" element={<CustomersList />} />
+        <Route
+          path="/nursery/pending-approval"
+          element={<NurseryPendingApproval />}
+        />
 
         {/* Customer */}
         <Route path="/customer/dashboard" element={<CustomerDashboard />} />
@@ -46,6 +52,7 @@ const AppRouter = () => {
         <Route path="/cart" element={<CartScreen />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<CheckoutScreen />} />
+        <Route path="/order-history" element={<OrderHistory />} />
 
         {/* Super Admin */}
         <Route path="/admin/dashboard" element={<SuperAdminDashboard />} />
