@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Home, FileText, DollarSign, Box, Image, Plus } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
-import { useLocation } from "react-router-dom";
 
 const ManagePlants = () => {
   const [plantData, setPlantData] = useState({

@@ -25,10 +25,6 @@ const ProductDetails = () => {
     navigate("/cart");
   };
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="h-screen flex flex-col">
       <Header />

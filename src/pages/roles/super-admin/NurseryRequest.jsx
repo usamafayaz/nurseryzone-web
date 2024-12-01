@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, XCircle, Leaf, Info, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const NurseryRequests = () => {
   const [selectedNursery, setSelectedNursery] = useState(null);
