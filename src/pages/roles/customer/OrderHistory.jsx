@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { List, Clock, CheckCircle, XCircle, Package } from "lucide-react";
+import {
+  List,
+  XCircle,
+  Package,
+  DollarSign,
+  Calendar,
+  User,
+} from "lucide-react";
+import { useToaster } from "../../../components/Toaster";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [comment, setComment] = useState("");
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState({});
   const navigate = useNavigate();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
-
+  const addToast = useToaster();
   const statusStyles = {
-    Pending: {
-      color: "text-yellow-500",
-      icon: <Clock className="inline mr-2" />,
-      description: "Order is being processed",
-    },
-    Completed: {
-      color: "text-green-500",
-      icon: <CheckCircle className="inline mr-2" />,
-      description: "Order has been delivered",
-    },
-    Cancelled: {
-      color: "text-red-500",
-      icon: <XCircle className="inline mr-2" />,
-      description: "Order was cancelled",
-    },
+    Pending: { bg: "bg-yellow-100", text: "text-yellow-800" },
+    Processing: { bg: "bg-blue-100", text: "text-blue-800" },
+    Shipped: { bg: "bg-purple-100", text: "text-purple-800" },
+    Delivered: { bg: "bg-green-100", text: "text-green-800" },
+    Cancelled: { bg: "bg-red-100", text: "text-red-800" },
   };
 
   useEffect(() => {
@@ -50,14 +52,51 @@ const OrderHistory = () => {
     };
 
     fetchOrders();
-  }, [storedUserData]);
+  }, []);
+
+  const handleFeedbackSubmit = async () => {
+    try {
+      console.log({
+        order_id: selectedOrder.order_id,
+        comment: comment,
+      });
+
+      const response = await fetch("http://localhost:8000/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          order_id: selectedOrder.order_id,
+          comment: comment,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit feedback");
+      }
+
+      setFeedbackSubmitted((prev) => ({
+        ...prev,
+        [selectedOrder.order_id]: true,
+      }));
+
+      addToast("Feedback submitted successfully!", "success");
+      setShowModal(false);
+    } catch (error) {
+      addToast(`Error submitting feedback: ${error.message}`, "success");
+    }
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <Package size={48} className="mx-auto text-green-600 mb-4" />
-          <p className="text-[#7F8C8D]">Loading your orders...</p>
+          <Package
+            size={48}
+            className="mx-auto text-green-600 mb-4 animate-pulse"
+          />
+          <p className="text-gray-600">Loading your orders...</p>
         </div>
       </div>
     );
@@ -65,10 +104,10 @@ const OrderHistory = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center">
         <div className="text-center">
           <XCircle size={48} className="mx-auto text-red-500 mb-4" />
-          <p className="text-[#7F8C8D]">Error: {error}</p>
+          <p className="text-red-600">Error: {error}</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
@@ -81,17 +120,22 @@ const OrderHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white py-8">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center mb-6">
           <List size={32} className="mr-4 text-green-600" />
-          <h1 className="text-2xl font-bold text-[#2C3E50]">My Orders</h1>
+          <h1 className="text-2xl font-bold text-gray-900">My Orders</h1>
         </div>
 
         {orders.length === 0 ? (
-          <div className="text-center py-10">
+          <div className="text-center py-12">
             <Package size={48} className="mx-auto text-gray-400 mb-4" />
-            <p className="text-[#7F8C8D]">You haven't placed any orders yet</p>
+            <p className="text-xl font-medium text-gray-900">
+              You haven't placed any orders yet
+            </p>
+            <p className="text-gray-500 mt-2">
+              Browse plants to make your first purchase!
+            </p>
             <button
               onClick={() => navigate("/dashboard")}
               className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
@@ -100,53 +144,111 @@ const OrderHistory = () => {
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
-            {orders.map((order, index) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {orders.map((order) => (
               <div
                 key={order.order_id}
-                className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition"
+                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100"
               >
-                <div className="flex justify-between items-center mb-4">
-                  <div>
-                    <h2 className="text-lg font-semibold text-[#2C3E50]">
-                      Order #{`ORD-${String(order.order_id).padStart(4, "0")}`}
-                    </h2>
-                    <p className="text-sm text-[#7F8C8D]">
-                      {new Date(order.Created_at).toLocaleString()}
-                    </p>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h2 className="text-lg font-bold text-gray-900">
+                        Order #
+                        {`ORD-${String(order.order_id).padStart(4, "0")}`}
+                      </h2>
+                      <div className="flex items-center mt-1 text-gray-600">
+                        <Calendar size={14} className="mr-2" />
+                        <span className="text-xs">
+                          {new Date(order.Created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        statusStyles[order.Status]?.bg
+                      } ${statusStyles[order.Status]?.text}`}
+                    >
+                      {order.Status}
+                    </span>
                   </div>
-                  <div
-                    className={`flex items-center ${
-                      statusStyles[order.Status]?.color || "text-gray-500"
-                    }`}
-                  >
-                    {statusStyles[order.Status]?.icon}
-                    <span className="font-medium">{order.Status}</span>
-                  </div>
-                </div>
 
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-[#2C3E50]">
-                      <span className="font-semibold">Plant:</span>{" "}
-                      {order["Plant name"]}
-                    </p>
-                    <p className="text-[#7F8C8D]">
-                      <span className="font-medium">Quantity:</span>{" "}
-                      {order.qunatity}
+                  <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-lg">
+                    <User size={16} className="text-gray-400 mr-2" />
+                    <p className="text-sm font-medium text-gray-900">
+                      Customer
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-green-600">
-                      ₹{order["Total Amount"].toLocaleString()}
-                    </p>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {order["Plant name"]}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Quantity: {order.qunatity}
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <DollarSign size={14} className="text-gray-400 mr-1" />
+                        <span className="text-sm font-medium text-gray-900">
+                          ₹{order["Total Amount"].toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
                   </div>
+
+                  {order.Status === "Delivered" &&
+                    !feedbackSubmitted[order.order_id] && (
+                      <button
+                        className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                        onClick={() => {
+                          setSelectedOrder(order);
+                          setShowModal(true);
+                        }}
+                      >
+                        Write Feedback
+                      </button>
+                    )}
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Feedback Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">
+              Feedback for Order #
+              {`ORD-${String(selectedOrder.order_id).padStart(4, "0")}`}
+            </h2>
+            <textarea
+              className="w-full border border-gray-300 rounded-lg p-2 mb-4"
+              placeholder="Write your feedback here..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <div className="flex justify-end space-x-2">
+              <button
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                onClick={handleFeedbackSubmit}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

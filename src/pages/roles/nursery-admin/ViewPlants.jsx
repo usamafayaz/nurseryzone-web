@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Leaf, Edit, Trash2, Plus } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToaster } from "../../../components/Toaster";
 
 const ViewPlants = () => {

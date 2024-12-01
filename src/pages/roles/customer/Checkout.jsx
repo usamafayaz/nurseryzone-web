@@ -42,7 +42,6 @@ const CheckoutScreen = () => {
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      alert("An error occurred during checkout");
     }
   };
 
