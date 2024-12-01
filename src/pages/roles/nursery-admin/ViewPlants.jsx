@@ -5,12 +5,13 @@ import { useToaster } from "../../../components/Toaster";
 
 const ViewPlants = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const nursery = location.state;
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalPlant, setModalPlant] = useState(null);
   const addToast = useToaster();
+  let nursery = localStorage.getItem("userData");
+  nursery = JSON.parse(nursery);
+
   // Fetch plants from API
   useEffect(() => {
     fetchPlants();

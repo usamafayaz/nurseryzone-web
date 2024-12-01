@@ -12,8 +12,8 @@ const ManagePlants = () => {
     image: null,
   });
   const addToast = useToaster();
-  const location = useLocation();
-  const nursery = location.state;
+  let nursery = localStorage.getItem("userData");
+  nursery = JSON.parse(nursery);
 
   const handleAddPlant = async () => {
     if (

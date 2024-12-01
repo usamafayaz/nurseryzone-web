@@ -43,12 +43,14 @@ const ProductDetails = () => {
 
         <div className="w-1/2 flex flex-col justify-center px-12 space-y-4">
           <div>
-            <h1 className="text-3xl font-bold text-green-900 mb-2">
-              {plant.name}
+            <h1 className="text-4xl font-bold text-green-900 mb-2">
+              Title: {plant.name}
             </h1>
-            <p className="text-gray-600 mb-4">{plant.description}</p>
-            <div className="text-4xl font-extrabold text-green-800 mb-4">
-              ${plant.price}
+            <p className="text-gray-600 mb-4">
+              Description: {plant.description}
+            </p>
+            <div className="text-3xl font-extrabold text-green-800 mb-4">
+              Price: ${plant.price}
             </div>
           </div>
 
@@ -71,19 +73,23 @@ const ProductDetails = () => {
           </div>
 
           <div>
-            {plant.stock < 15 && (
+            {plant.stock < 15 && plant.stock !== 0 && (
               <p className="text-red-500 mb-2">Only a few items are left!</p>
             )}
             <button
               onClick={handleAddToCart}
-              disabled={plant.stock < 1}
-              className={`w-full py-3 rounded-lg text-white font-semibold transition ${
-                plant.stock > 0
+              disabled={plant.stock < selectedQuantity}
+              className={`w-full mt-6 py-3 rounded-lg text-white font-semibold transition ${
+                plant.stock >= selectedQuantity
                   ? "bg-green-700 hover:bg-green-800"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
             >
-              {plant.stock > 0 ? "Add to Cart" : "Out of Stock"}
+              {plant.stock == 0
+                ? "Out of Stock"
+                : plant.stock < selectedQuantity
+                ? "Stock is less than your selected quantity"
+                : "Add to Cart"}
             </button>
           </div>
         </div>

@@ -19,22 +19,36 @@ const Login = () => {
       const response = await fetch(
         `http://localhost:8000/api/login?email=${email}&password=${password}`
       );
-      const result = await response.json();
 
       if (!response.ok) {
+        // Check for specific 403 status for nursery pending approval
+        if (response.status === 403) {
+          const errorData = await response.json();
+          if (errorData.detail === "Permission denied") {
+            navigate("/nursery/pending-approval");
+            return;
+          }
+        }
+
+        // Generic error handling for other non-successful responses
         addToast("Invalid credentials, please try again.", "error");
         return;
       }
 
+      const result = await response.json();
       console.log(result);
-      if (result) {
-        addToast("Login successful!", "success");
-        if (result.role.toLowerCase() === "admin")
-          navigate("/admin/dashboard", { state: result });
-        else if (result.role.toLowerCase() === "nursery")
-          navigate("/nursery/dashboard", { state: result });
-        else if (result.role.toLowerCase() === "customer")
-          navigate("/customer/dashboard", { state: result });
+
+      // Save the result object in localStorage
+      localStorage.setItem("userData", JSON.stringify(result));
+      addToast("Login successful!", "success");
+
+      // Navigate to the appropriate dashboard based on role
+      if (result.role.toLowerCase() === "admin") {
+        navigate("/admin/dashboard");
+      } else if (result.role.toLowerCase() === "nursery") {
+        navigate("/nursery/dashboard");
+      } else if (result.role.toLowerCase() === "customer") {
+        navigate("/customer/dashboard");
       }
     } catch (error) {
       addToast("Something went wrong. Please try again later.", "error");

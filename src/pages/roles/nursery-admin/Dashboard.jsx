@@ -12,9 +12,8 @@ import {
 
 const NurseryDashboard = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const nursery = location.state;
-  console.log("Billi", nursery);
+  let storedUserData = localStorage.getItem("userData");
+  storedUserData = JSON.parse(storedUserData);
 
   const menuItems = [
     {
@@ -69,7 +68,7 @@ const NurseryDashboard = () => {
           <div className="flex items-center space-x-4">
             <Leaf size={32} className="text-white" />
             <div>
-              <h1 className="text-3xl font-bold">{nursery.name}</h1>
+              <h1 className="text-3xl font-bold">{storedUserData.name}</h1>
               <p className="text-green-100 mt-1">
                 Manage your botanical business with ease
               </p>
@@ -84,7 +83,7 @@ const NurseryDashboard = () => {
           {menuItems.map((item, index) => (
             <div
               key={index}
-              onClick={() => navigate(item.screen, { state: nursery })}
+              onClick={() => navigate(item.screen)}
               className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />

@@ -1,11 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DollarSign, Package, Calendar, User } from "lucide-react";
-import { DUMMY_ORDERS } from "../../../utils/dummyData";
-import { useLocation } from "react-router-dom";
 
 const OrderDetails = () => {
-  const location = useLocation();
-  const nursery = location.state;
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        let nursery = localStorage.getItem("userData");
+        nursery = JSON.parse(nursery);
+        const nurseryId = nursery?.user_id;
+        console.log(nursery);
+
+        const response = await fetch(
+          `http://localhost:8000/api/order?nursery_id=${nurseryId}&skip=0&limit=20`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders.");
+        }
+
+        const data = await response.json();
+        setOrders(data); // Assuming the API response is directly usable
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       {/* Header Section */}
@@ -25,9 +53,13 @@ const OrderDetails = () => {
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-8">
-        {DUMMY_ORDERS.length > 0 ? (
-          DUMMY_ORDERS.map((order) => (
-            <div key={order.id} className="mb-8">
+        {loading ? (
+          <p className="text-center text-gray-600">Loading orders...</p>
+        ) : error ? (
+          <p className="text-center text-red-600">Error: {error}</p>
+        ) : orders.length > 0 ? (
+          orders.map((order) => (
+            <div key={order.order_id} className="mb-8">
               <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
                 {/* Decorative element */}
                 <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
@@ -36,15 +68,17 @@ const OrderDetails = () => {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">
-                      Order #{order.id}
+                      Ord#{order.order_id}
                     </h2>
                     <div className="flex items-center mt-2 text-gray-600">
                       <Calendar size={16} className="mr-2" />
-                      <span className="text-sm">{order.date}</span>
+                      <span className="text-sm">
+                        {new Date(order.Created_at).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
                   <span className="px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-800">
-                    {order.status}
+                    {order.Status}
                   </span>
                 </div>
 
@@ -52,36 +86,29 @@ const OrderDetails = () => {
                 <div className="flex items-center mb-6 p-4 bg-gray-50 rounded-lg">
                   <User size={20} className="text-gray-400 mr-3" />
                   <div>
-                    <p className="font-medium text-gray-900">
-                      {order.customerName}
-                    </p>
+                    <p className="font-medium text-gray-900">Customer</p>
                   </div>
                 </div>
 
                 {/* Order Items */}
                 <div className="space-y-4">
                   <h3 className="font-semibold text-gray-900">Order Items</h3>
-                  {order.items.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between items-center p-4 bg-gray-50 rounded-lg"
-                    >
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          Plant ID: {item.plantId}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Quantity: {item.quantity}
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <DollarSign size={16} className="text-gray-400 mr-1" />
-                        <span className="font-medium text-gray-900">
-                          ${item.price}
-                        </span>
-                      </div>
+                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Plant Name: {order["Plant name"]}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {order.qunatity}
+                      </p>
                     </div>
-                  ))}
+                    <div className="flex items-center">
+                      <DollarSign size={16} className="text-gray-400 mr-1" />
+                      <span className="font-medium text-gray-900">
+                        ${order["Total Amount"]}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Total */}
@@ -91,7 +118,7 @@ const OrderDetails = () => {
                     <div className="flex items-center">
                       <DollarSign size={20} className="text-green-600 mr-1" />
                       <span className="text-xl font-bold text-green-600">
-                        ${order.total}
+                        ${order["Total Amount"]}
                       </span>
                     </div>
                   </div>
