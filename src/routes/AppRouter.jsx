@@ -24,6 +24,8 @@ import CartScreen from "../pages/roles/customer/Cart";
 import ProductDetails from "../pages/roles/customer/ProductDetails";
 import CheckoutScreen from "../pages/roles/customer/Checkout";
 import OrderHistory from "../pages/roles/customer/OrderHistory";
+import DeliveryBoy from "../pages/roles/nursery-admin/DeliveryBoy";
+import DeliveryBoyDashboard from "../pages/roles/delivery-man/Dashboard";
 
 const AppRouter = () => {
   return (
@@ -41,6 +43,7 @@ const AppRouter = () => {
         <Route path="/nursery/order-details" element={<OrderDetails />} />
         <Route path="/nursery/reviews" element={<Reviews />} />
         <Route path="/nursery/customers" element={<CustomersList />} />
+        <Route path="/nursery/delivery-boy" element={<DeliveryBoy />} />
         <Route
           path="/nursery/pending-approval"
           element={<NurseryPendingApproval />}
@@ -60,6 +63,11 @@ const AppRouter = () => {
         <Route
           path="/admin/registered-nurseries"
           element={<RegisteredNurseries />}
+        />
+        {/* Super Admin */}
+        <Route
+          path="/delivery-man/dashboard"
+          element={<DeliveryBoyDashboard />}
         />
       </Routes>
     </Router>

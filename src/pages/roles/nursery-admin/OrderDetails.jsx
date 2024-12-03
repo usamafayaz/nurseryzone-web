@@ -4,6 +4,7 @@ import { useToaster } from "../../../components/Toaster";
 
 const OrderDetails = () => {
   const [orders, setOrders] = useState([]);
+  const [deliveryBoys, setDeliveryBoys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const addToast = useToaster();
@@ -11,9 +12,27 @@ const OrderDetails = () => {
     "Pending",
     "Processing",
     "Shipped",
-    "Delivered",
-    "Cancelled",
+    // "Delivered",
+    // "Cancelled",
   ]);
+
+  let storedUserData = localStorage.getItem("userData");
+  storedUserData = JSON.parse(storedUserData);
+
+  useEffect(() => {
+    fetchDeliveryBoys();
+  }, []);
+  const fetchDeliveryBoys = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/delivery/boy?nursery_id=${storedUserData.user_id}`
+      );
+      const result = await response.json();
+      setDeliveryBoys(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
@@ -39,6 +58,32 @@ const OrderDetails = () => {
       console.error(err);
       addToast("Invalid status transition!", "error");
     }
+  };
+
+  const scheduleDelivery = async (orderId, deliveryBoyID) => {
+    console.log(deliveryBoyID);
+    console.log(orderId);
+
+    // try {
+    //   let nursery = localStorage.getItem("userData");
+    //   nursery = JSON.parse(nursery);
+    //   const nurseryId = nursery?.user_id;
+
+    //   const response = await fetch(
+    //     `http://localhost:8000/api/order?nursery_id=${nurseryId}&skip=0&limit=20`
+    //   );
+
+    //   if (!response.ok) {
+    //     throw new Error("Failed to fetch orders.");
+    //   }
+
+    //   const data = await response.json();
+    //   setOrders(data);
+    // } catch (err) {
+    //   setError(err.message);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   useEffect(() => {
@@ -170,6 +215,29 @@ const OrderDetails = () => {
                         </select>
                       </div>
                     </div>
+
+                    {order.Status == "Shipped" && (
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-semibold text-gray-900">
+                          Assign Delivery
+                        </span>
+                        <div className="relative">
+                          <select
+                            className="block w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-600 focus:border-green-600 pl-2 py-2 pr-10"
+                            onChange={(e) =>
+                              scheduleDelivery(order.order_id, e.target.value)
+                            }
+                          >
+                            {deliveryBoys.map((boy) => (
+                              <option key={boy.user_id} value={boy.user_id}>
+                                {boy.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-semibold text-gray-900">
                         Total

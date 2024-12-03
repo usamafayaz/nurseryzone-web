@@ -8,6 +8,7 @@ import {
   Users,
   MessageSquare,
   ArrowRight,
+  Bike,
 } from "lucide-react";
 
 const NurseryDashboard = () => {
@@ -44,13 +45,13 @@ const NurseryDashboard = () => {
       screen: "/nursery/reviews",
       color: "bg-green-600",
     },
-    // {
-    //   title: "Customers",
-    //   description: "View and manage customer information",
-    //   icon: <Users size={24} />,
-    //   screen: "/nursery/customers",
-    //   color: "bg-green-600",
-    // },
+    {
+      title: "Add Delivery Boy",
+      description: "Add and manage delivery boy",
+      icon: <Bike size={24} />,
+      screen: "/nursery/delivery-boy",
+      color: "bg-green-600",
+    },
     {
       title: "Chat with Gemini",
       description: "Get AI assistance for your queries",
