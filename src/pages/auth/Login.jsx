@@ -49,6 +49,8 @@ const Login = () => {
         navigate("/nursery/dashboard");
       } else if (result.role.toLowerCase() === "customer") {
         navigate("/customer/dashboard");
+      } else if (result.role.toLowerCase() === "deliveryboy") {
+        navigate("/delivery-man/dashboard");
       }
     } catch (error) {
       addToast("Something went wrong. Please try again later.", "error");
