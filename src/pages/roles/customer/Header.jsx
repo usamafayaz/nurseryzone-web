@@ -12,6 +12,8 @@ const Header = ({ onSearchChange, searchTerm }) => {
   const handleLogoutClick = () => {
     setShowModal(true);
   };
+  let user = localStorage.getItem("userData");
+  user = JSON.parse(user);
 
   return (
     <div className="bg-green-600 text-white py-4 px-6">
@@ -19,7 +21,7 @@ const Header = ({ onSearchChange, searchTerm }) => {
         <div className="flex items-center space-x-4">
           <Leaf size={32} className="text-white" />
           <div>
-            <h1 className="text-xl font-bold">Plant Paradise</h1>
+            <h1 className="text-xl font-bold">Welcome, {user.name}</h1>
             <p className="text-green-100 mt-1">
               Discover your perfect green companion
             </p>

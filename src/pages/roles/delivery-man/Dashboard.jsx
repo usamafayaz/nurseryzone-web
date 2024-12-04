@@ -75,7 +75,9 @@ const DeliveryDasboard = () => {
           <div className="flex items-center space-x-4">
             <Package size={32} />
             <div>
-              <h1 className="text-xl font-bold">Order Deliveries</h1>
+              <h1 className="text-xl font-bold">
+                Welcome, {storedUserData.name}
+              </h1>
               <p className="text-green-100 mt-1">
                 View and manage your deliveries
               </p>
