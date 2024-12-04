@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DollarSign, Package, Calendar, User } from "lucide-react";
+import { Package, Calendar, User } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
 
 const OrderDetails = () => {
@@ -28,16 +28,28 @@ const OrderDetails = () => {
         `http://localhost:8000/api/delivery/boy?nursery_id=${storedUserData.user_id}`
       );
       const result = await response.json();
-      const allBoys = [
-        {
-          delivery_boy_id: 90,
-          name: "Select Delivery Boy",
-          user_id: 90,
-        },
-        ...result,
-      ];
-      setDeliveryBoys(allBoys);
-      console.log(deliveryBoys);
+      if (response.ok) {
+        const allBoys = [
+          {
+            delivery_boy_id: 90,
+            name: "Select Delivery Boy",
+            user_id: 90,
+          },
+          ...result,
+        ];
+        setDeliveryBoys(allBoys);
+        console.log(deliveryBoys);
+      } else if (response.status == 404) {
+        console.log("aalu");
+
+        setDeliveryBoys([
+          {
+            delivery_boy_id: 90,
+            name: "No delivery boy found",
+            user_id: 90,
+          },
+        ]);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -198,9 +210,8 @@ const OrderDetails = () => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <DollarSign size={14} className="text-gray-400 mr-1" />
                         <span className="text-sm font-medium text-gray-900">
-                          ${order["Total Amount"]}
+                          Rs. {order["Total Amount"]}
                         </span>
                       </div>
                     </div>
@@ -260,9 +271,8 @@ const OrderDetails = () => {
                         Total
                       </span>
                       <div className="flex items-center">
-                        <DollarSign size={16} className="text-green-600 mr-1" />
                         <span className="text-base font-bold text-green-600">
-                          ${order["Total Amount"]}
+                          Rs. {order["Total Amount"]}
                         </span>
                       </div>
                     </div>
