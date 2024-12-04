@@ -17,7 +17,7 @@ export const ToasterProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={addToast}>
       {children}
-      <div className="fixed top-5 right-5 space-y-2">
+      <div className="fixed bottom-5 right-5 space-y-2">
         {toasts.map((toast) => (
           <div
             key={toast.id}

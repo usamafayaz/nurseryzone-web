@@ -7,8 +7,8 @@ import Signup from "../pages/auth/Signup";
 import SignupLanding from "../pages/auth/SignupLanding";
 
 import NurseryDashboard from "../pages/roles/nursery-admin/Dashboard";
+import AddPlant from "../pages/roles/nursery-admin/AddPlant";
 import ManagePlants from "../pages/roles/nursery-admin/ManagePlants";
-import ViewPlants from "../pages/roles/nursery-admin/ViewPlants";
 import OrderDetails from "../pages/roles/nursery-admin/OrderDetails";
 import Reviews from "../pages/roles/nursery-admin/Reviews";
 import CustomersList from "../pages/roles/nursery-admin/Customers";
@@ -38,8 +38,8 @@ const AppRouter = () => {
 
         {/* Nursery Admin */}
         <Route path="/nursery/dashboard" element={<NurseryDashboard />} />
+        <Route path="/nursery/add-plant" element={<AddPlant />} />
         <Route path="/nursery/manage-plants" element={<ManagePlants />} />
-        <Route path="/nursery/view-plants" element={<ViewPlants />} />
         <Route path="/nursery/order-details" element={<OrderDetails />} />
         <Route path="/nursery/reviews" element={<Reviews />} />
         <Route path="/nursery/customers" element={<CustomersList />} />

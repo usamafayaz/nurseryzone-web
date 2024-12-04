@@ -16,7 +16,7 @@ const useCartStore = create(
             return {
               cart: state.cart.map((item) =>
                 item.plant_id === plant.plant_id
-                  ? { ...item, quantity: item.quantity + quantity }
+                  ? { ...item, quantity: Math.max(item.quantity, quantity) }
                   : item
               ),
             };
@@ -69,7 +69,7 @@ const useCartStore = create(
     }),
     {
       name: "plant-cart-storage", // unique name
-      storage: createJSONStorage(() => localStorage), // persist in localStorage
+      // storage: createJSONStorage(() => localStorage), // persist in localStorage
       partialize: (state) => ({ cart: state.cart }), // Only store cart in localStorage
     }
   )

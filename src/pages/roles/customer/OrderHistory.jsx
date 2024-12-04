@@ -9,6 +9,7 @@ import {
   User,
 } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
+import { BiMoney } from "react-icons/bi";
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -39,14 +40,13 @@ const OrderHistory = () => {
         const response = await fetch(
           `http://localhost:8000/api/order/${storedUserData.user_id}?skip=0&limit=20`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
+        if (response.ok) {
+          const data = await response.json();
+          setOrders(data);
         }
-        const data = await response.json();
-        setOrders(data);
-        setLoading(false);
       } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -137,7 +137,7 @@ const OrderHistory = () => {
               Browse plants to make your first purchase!
             </p>
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/customer/dashboard")}
               className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
             >
               Browse Plants
@@ -191,9 +191,9 @@ const OrderHistory = () => {
                         </p>
                       </div>
                       <div className="flex items-center">
-                        <DollarSign size={14} className="text-gray-400 mr-1" />
+                        <BiMoney size={14} className="text-gray-400 mr-1" />
                         <span className="text-sm font-medium text-gray-900">
-                          ₹{order["Total Amount"].toLocaleString()}
+                          Rs{order["Total Amount"].toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -218,7 +218,6 @@ const OrderHistory = () => {
         )}
       </div>
 
-      {/* Feedback Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">

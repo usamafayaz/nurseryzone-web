@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import useCartStore from "../../../store/cartStore";
 import ProductCard from "../../../components/ProductCard";
 import Header from "./Header";
 
@@ -32,18 +31,17 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-
-  const filteredPlants = plants.filter((plant) =>
-    plant.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  let filteredPlants = [];
+  if (plants.length > 0) {
+    filteredPlants = plants?.filter((plant) =>
+      plant.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
       <Header />
-
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Search and Filter Section */}
         <div className="mb-8 flex items-center space-x-4">
           <div className="relative flex-grow">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -84,24 +82,22 @@ const Dashboard = () => {
           </button>
         </div>
 
-        {/* Loading State */}
         {loading ? (
           <div className="text-center py-10">
             <p className="text-[#7F8C8D]">Loading plants...</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
-            {filteredPlants.map((plant) => (
-              <ProductCard key={plant.plant_id} plant={plant} />
-            ))}
-
-            {/* Empty State */}
-            {filteredPlants.length === 0 && (
+            {filteredPlants.length === 0 ? (
               <div className="col-span-full text-center py-10">
                 <p className="text-[#7F8C8D] text-lg">
                   No plants found matching your search
                 </p>
               </div>
+            ) : (
+              filteredPlants.map((plant) => (
+                <ProductCard key={plant.plant_id} plant={plant} />
+              ))
             )}
           </div>
         )}

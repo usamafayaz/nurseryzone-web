@@ -71,9 +71,7 @@ const CheckoutScreen = () => {
       </button>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Column - Checkout Details */}
         <div className="bg-white shadow-lg rounded-xl p-8 space-y-6">
-          {/* Personal Information Section */}
           <div>
             <h3 className="text-xl font-semibold mb-4 flex items-center">
               <MapPin className="mr-2 text-green-600" /> Personal Information
@@ -121,7 +119,6 @@ const CheckoutScreen = () => {
             </div>
           </div>
 
-          {/* Payment Method */}
           <div>
             <h3 className="text-xl font-semibold mb-4 flex items-center">
               <CreditCard className="mr-2 text-green-600" /> Payment Method
@@ -156,9 +153,7 @@ const CheckoutScreen = () => {
           </div>
         </div>
 
-        {/* Right Column - Order Summary & Complete Order */}
         <div className="space-y-6">
-          {/* Order Summary */}
           <div className="bg-white shadow-lg rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-4 flex items-center">
               <ShoppingCart className="mr-2 text-green-600" /> Order Summary
@@ -180,17 +175,16 @@ const CheckoutScreen = () => {
                   </div>
                 </div>
                 <p className="font-semibold">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  Rs. {(item.price * item.quantity).toFixed(2)}
                 </p>
               </div>
             ))}
             <div className="flex justify-between mt-4 font-bold text-xl">
               <span>Total</span>
-              <span>${totalPrice.toFixed(2)}</span>
+              <span>Rs. {totalPrice.toFixed(2)}</span>
             </div>
           </div>
 
-          {/* Complete Order Button */}
           <div className="bg-white shadow-lg rounded-xl p-6">
             <button
               type="submit"

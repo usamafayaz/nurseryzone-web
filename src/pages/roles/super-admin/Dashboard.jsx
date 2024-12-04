@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Building2, Users, ArrowRight, Leaf } from "lucide-react";
+import { Building2, Users, ArrowRight, Leaf, LogOut } from "lucide-react";
+import LogoutModal from "../../../components/LogoutModal";
 
 const SuperAdminDashboard = () => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowModal(true);
+  };
 
   const menuItems = [
     {
@@ -26,14 +32,20 @@ const SuperAdminDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
       <div className="bg-green-600 text-white py-8 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-start">
             <Leaf size={32} className="text-white" />
-            <div>
-              <h1 className="text-3xl font-bold">Super Admin Dashboard</h1>
+            <div className="ml-6">
+              <h1 className="text-3xl font-bold ">Super Admin Dashboard</h1>
               <p className="text-green-100 mt-1">
                 Manage and oversee nursery network
               </p>
             </div>
+            <button
+              className="absolute right-10 z-10"
+              onClick={handleLogoutClick}
+            >
+              <LogOut />
+            </button>
           </div>
         </div>
       </div>
@@ -68,8 +80,8 @@ const SuperAdminDashboard = () => {
           ))}
         </div>
       </div>
+      {showModal && <LogoutModal setShowModal={setShowModal} />}
 
-      {/* Decorative circles */}
       <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />

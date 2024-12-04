@@ -84,10 +84,8 @@ const ChatBot = () => {
 
   return (
     <div className="bg-gradient-to-br from-emerald-50 to-white relative overflow-hidden">
-      {/* Decorative Gradient Overlay */}
       <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-emerald-200 to-green-100 pointer-events-none" />
 
-      {/* Header Section with Subtle Elevation */}
       <div className="bg-emerald-600 text-white py-4 px-6 shadow-md relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -104,13 +102,10 @@ const ChatBot = () => {
         </div>
       </div>
 
-      {/* Main Chat Container */}
       <div className="max-w-4xl mx-auto px-6 py-8 relative z-20">
         <div className="bg-white rounded-2xl shadow-2xl border border-emerald-50 p-8 relative overflow-hidden min-h-[500px] flex flex-col">
-          {/* Subtle Accent Border */}
           <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600" />
 
-          {/* Messages Container */}
           <div className="flex-1 overflow-y-auto space-y-4 mb-6 pr-2">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
@@ -159,7 +154,6 @@ const ChatBot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Section */}
           <div className="relative">
             <MessageSquare
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -184,21 +178,18 @@ const ChatBot = () => {
         </div>
       </div>
 
-      {/* Decorative Circles */}
       <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-emerald-600 border-opacity-10 rounded-full" />
       <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-emerald-600 border-opacity-10 rounded-full" />
     </div>
   );
 };
 
-// Format message text with proper styling
 const FormattedText = ({ text, isUser }) => {
   const lines = text.split("\n");
   let inCodeBlock = false;
   let codeContent = "";
 
   return lines.map((line, lineIndex) => {
-    // Check for numbered headings
     const numberedHeadingMatch = line.match(/^(\d+\.) \*\*(.*?)\*\*/);
     if (numberedHeadingMatch) {
       const [, number, headingText] = numberedHeadingMatch;
@@ -214,7 +205,6 @@ const FormattedText = ({ text, isUser }) => {
       );
     }
 
-    // Handle code blocks
     if (line.trim() === "```") {
       if (inCodeBlock) {
         const content = codeContent;
@@ -251,7 +241,6 @@ const FormattedText = ({ text, isUser }) => {
       return null;
     }
 
-    // Handle other formatting
     const parts = line.split(/(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*)/);
 
     return (

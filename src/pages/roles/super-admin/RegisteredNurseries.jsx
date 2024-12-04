@@ -58,7 +58,6 @@ const RegisteredNurseries = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header Section */}
       <div className="bg-green-600 text-white py-4 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -73,9 +72,7 @@ const RegisteredNurseries = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Registered Nurseries Table */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-8">
           {registeredNurseries.length === 0 ? (
             <div className="text-center py-8">
@@ -90,13 +87,12 @@ const RegisteredNurseries = () => {
                     <th className="p-3 text-left">Nursery Name</th>
                     <th className="p-3 text-left">Address</th>
                     <th className="p-3 text-left">Contact Number</th>
-                    {/* <th className="p-3 text-center">Actions</th> */}
                   </tr>
                 </thead>
                 <tbody>
-                  {registeredNurseries.map((nursery) => (
+                  {registeredNurseries.map((nursery, index) => (
                     <tr
-                      key={nursery.id}
+                      key={index}
                       className="border-b hover:bg-green-50 relative"
                     >
                       <td

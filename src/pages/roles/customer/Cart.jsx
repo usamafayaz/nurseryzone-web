@@ -42,7 +42,7 @@ const CartScreen = () => {
                   />
                   <div>
                     <p className="font-semibold text-lg">{item.name}</p>
-                    <p className="text-gray-500">${item.price}</p>
+                    <p className="text-gray-500">Rs. {item.price}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -78,22 +78,17 @@ const CartScreen = () => {
               <div className="flex justify-between mb-4">
                 <span className="text-xl text-gray-700">Subtotal</span>
                 <span className="text-2xl font-bold">
-                  ${totalPrice.toFixed(2)}
+                  Rs. {totalPrice.toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between mb-4">
                 <span className="text-lg text-gray-600">Shipping</span>
-                <span className="text-lg text-gray-600">
-                  {totalPrice > 50 ? "Free" : "$5.00"}
-                </span>
+                <span className="text-lg text-gray-600">Free</span>
               </div>
               <div className="border-t pt-4 flex justify-between">
                 <span className="text-xl font-bold text-gray-900">Total</span>
                 <span className="text-2xl font-bold text-green-600">
-                  $
-                  {totalPrice > 50
-                    ? totalPrice.toFixed(2)
-                    : (totalPrice + 5).toFixed(2)}
+                  Rs. {totalPrice}
                 </span>
               </div>
               <button

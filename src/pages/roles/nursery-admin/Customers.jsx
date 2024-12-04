@@ -8,7 +8,6 @@ const CustomersList = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header Section */}
       <div className="bg-green-600 text-white py-4 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -23,16 +22,13 @@ const CustomersList = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-8">
         {DUMMY_CUSTOMERS.length > 0 ? (
           DUMMY_CUSTOMERS.map((customer) => (
             <div key={customer.id} className="mb-8">
               <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
-                {/* Decorative element */}
                 <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
 
-                {/* Customer Header */}
                 <div className="flex justify-between items-start mb-6">
                   <h2 className="text-xl font-bold text-gray-900">
                     {customer.name}
@@ -45,7 +41,6 @@ const CustomersList = () => {
                   </div>
                 </div>
 
-                {/* Customer Details */}
                 <div className="space-y-4">
                   <div className="flex items-center p-4 bg-gray-50 rounded-lg">
                     <Mail size={20} className="text-gray-400 mr-3" />
@@ -93,7 +88,6 @@ const CustomersList = () => {
         )}
       </div>
 
-      {/* Decorative circles */}
       <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
