@@ -4,9 +4,11 @@ import {
   List,
   XCircle,
   Package,
-  DollarSign,
   Calendar,
   User,
+  Send,
+  X,
+  MessageSquare,
 } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
 import { BiMoney } from "react-icons/bi";
@@ -219,31 +221,50 @@ const OrderHistory = () => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">
-              Feedback for Order #
-              {`ORD-${String(selectedOrder.order_id).padStart(4, "0")}`}
-            </h2>
-            <textarea
-              className="w-full border border-gray-300 rounded-lg p-2 mb-4"
-              placeholder="Write your feedback here..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <div className="flex justify-end space-x-2">
-              <button
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                onClick={handleFeedbackSubmit}
-              >
-                Submit
-              </button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full mx-auto animate-modal-scale">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-900 flex items-center">
+                  <MessageSquare className="mr-2 text-green-600" />
+                  Order Feedback
+                </h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <p className="text-sm text-gray-500 mb-4">
+                Provide feedback for Order #
+                {`ORD-${String(selectedOrder.order_id).padStart(4, "0")}`}
+              </p>
+
+              <textarea
+                className="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:ring-2 focus:ring-green-200 transition-all duration-300"
+                placeholder="Share your experience..."
+                rows={4}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+
+              <div className="flex justify-end space-x-2">
+                <button
+                  className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="flex items-center justify-center px-4 py-2 rounded-lg transition  bg-green-500 hover:bg-green-600 text-white
+                  "
+                  onClick={handleFeedbackSubmit}
+                >
+                  <Send size={16} className="mr-2" /> Submit Feedback
+                </button>
+              </div>
             </div>
           </div>
         </div>
