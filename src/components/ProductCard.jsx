@@ -25,7 +25,7 @@ const ProductCard = ({ plant }) => {
         <div className="flex justify-between items-center mb-2">
           <h3 className="text-lg font-semibold">{plant.name}</h3>
           <span className="text-green-600 font-bold">
-            ${parseFloat(plant.price).toFixed(2)}
+            Rs. {parseFloat(plant.price).toFixed(2)}
           </span>
         </div>
         <p className="text-gray-500 text-sm mb-4">{plant.description}</p>
@@ -38,7 +38,7 @@ const ProductCard = ({ plant }) => {
           </button>
           <button
             onClick={(e) => {
-              e.stopPropagation(); // Prevent navigating to details
+              e.stopPropagation();
               addToCart(plant, 1);
             }}
             disabled={plant.stock === 0}

@@ -1,209 +1,275 @@
-import React, { useState } from "react";
-import { Home, FileText, DollarSign, Box, Image, Plus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Leaf, Edit, Trash2, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useToaster } from "../../../components/Toaster";
 
 const ManagePlants = () => {
-  const [plantData, setPlantData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    stock: "",
-    image: null,
-  });
+  const navigate = useNavigate();
+  const [plants, setPlants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [modalPlant, setModalPlant] = useState(null);
   const addToast = useToaster();
   let nursery = localStorage.getItem("userData");
   nursery = JSON.parse(nursery);
 
-  const handleAddPlant = async () => {
+  useEffect(() => {
+    fetchPlants();
+  }, []);
+  const fetchPlants = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/nursery/plants?nursery_id=${
+          nursery.user_id
+        }&skip=${0}&limit=${20}`
+      );
+      const data = await response.json();
+      console.log(data);
+
+      setPlants(data);
+    } catch (error) {
+      console.error("Error fetching plants:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleEdit = (plant) => {
+    setModalPlant(plant);
+  };
+
+  const handleDelete = async (plantId) => {
+    const response = await fetch(
+      `http://localhost:8000/api/nursery/plant?plant_id=${plantId}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (response.ok) {
+      addToast("Plant Successfully Deleted", "success");
+      setPlants(plants.filter((plant) => plant.plant_id !== plantId));
+    }
+  };
+
+  const handleModalClose = () => {
+    setModalPlant(null);
+  };
+
+  const handleModalSave = async () => {
     if (
-      !plantData.name ||
-      !plantData.price ||
-      !plantData.image ||
-      !plantData.description ||
-      !plantData.stock
+      !modalPlant.name ||
+      !modalPlant.description ||
+      !modalPlant.price ||
+      !modalPlant.stock ||
+      !modalPlant.image
     ) {
-      addToast("Please fill all the fields", "error");
+      addToast("Please fill in all fields", "error");
       return;
     }
-    // Create FormData
+
     const formData = new FormData();
-    formData.append("nursery_id", nursery.user_id);
-    formData.append("name", plantData.name);
-    formData.append("description", plantData.description);
-    formData.append("price", plantData.price);
-    formData.append("stock", plantData.stock);
-    formData.append("image", plantData.image);
+    formData.append("plant_id", modalPlant.plant_id);
+    formData.append("name", modalPlant.name);
+    formData.append("description", modalPlant.description);
+    formData.append("price", modalPlant.price);
+    formData.append("stock", modalPlant.stock);
+    formData.append("image", modalPlant.image);
 
     try {
-      const response = await fetch("http://localhost:8000/api/nursery/plant", {
-        method: "POST",
+      const response = await fetch(`http://localhost:8000/api/nursery/plant`, {
+        method: "PUT",
         body: formData,
       });
 
-      if (response.ok) {
-        addToast("Plant added successfully", "success");
-        setPlantData({
-          name: "",
-          description: "",
-          price: "",
-          stock: "",
-          image: null,
-        });
-      } else {
-        const data = await response.json();
-        addToast(data.message || "Failed to add plant", "error");
+      if (!response.ok) {
+        throw new Error("Failed to update plant");
       }
-    } catch (err) {
-      addToast("An error occurred. Please try again", "error");
+
+      const updatedPlant = await response.json();
+      addToast("Plant updated successfully", "success");
+
+      setPlants((prevPlants) =>
+        prevPlants.map((plant) =>
+          plant.plant_id === updatedPlant.plant_id ? updatedPlant : plant
+        )
+      );
+      fetchPlants();
+
+      handleModalClose();
+    } catch (error) {
+      console.error("Error updating plant:", error);
+      addToast("Failed to update plant", "error");
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header Section */}
-      <div className="bg-green-600 text-white py-4 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center space-x-4">
-            <Home size={32} />
-            <div>
-              <h1 className="text-xl font-bold">Manage Plants</h1>
-              <p className="text-green-100 mt-1">
-                Add new plants to your inventory
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
-          {/* Decorative element */}
-          <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
-
-          <div className="space-y-6">
-            {/* Name Input */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Name *
-              </label>
-              <div className="relative">
-                <FileText
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="text"
-                  value={plantData.name}
-                  onChange={(e) =>
-                    setPlantData({ ...plantData, name: e.target.value })
-                  }
-                  placeholder="Enter plant name"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                />
+      <div className="bg-green-600 text-white py-4 px-10">
+        <div className="mx-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Leaf size={32} />
+              <div>
+                <h1 className="text-xl font-bold">Your Plants</h1>
+                <p className="text-green-100 mt-1">
+                  View and manage your plant inventory
+                </p>
               </div>
             </div>
-
-            {/* Description Input */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description *
-              </label>
-              <div className="relative">
-                <FileText
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="text"
-                  value={plantData.description}
-                  onChange={(e) =>
-                    setPlantData({ ...plantData, description: e.target.value })
-                  }
-                  placeholder="Enter description"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                  rows="3"
-                ></input>
-              </div>
-            </div>
-
-            {/* Price Input */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Price *
-              </label>
-              <div className="relative">
-                <DollarSign
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="number"
-                  value={plantData.price}
-                  onChange={(e) =>
-                    setPlantData({ ...plantData, price: e.target.value })
-                  }
-                  placeholder="Enter price"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                />
-              </div>
-            </div>
-
-            {/* Stock Input */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Stock *
-              </label>
-              <div className="relative">
-                <Box
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="number"
-                  min="0"
-                  value={plantData.stock}
-                  onChange={(e) =>
-                    setPlantData({ ...plantData, stock: e.target.value })
-                  }
-                  placeholder="Enter stock quantity"
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                />
-              </div>
-            </div>
-
-            {/* Image Input */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Image *
-              </label>
-              <div className="relative">
-                <Image
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                  size={20}
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) =>
-                    setPlantData({ ...plantData, image: e.target.files[0] })
-                  }
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg transition-all duration-200 ease-in-out"
-                />
-              </div>
-            </div>
-
-            {/* Submit Button */}
             <button
-              onClick={handleAddPlant}
-              className="group relative w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 ease-in-out"
+              onClick={() => navigate("/nursery/add-plant")}
+              className="flex items-center px-4 py-2 bg-white text-green-600 rounded-lg hover:bg-green-50 transition-colors"
             >
               <Plus size={20} className="mr-2" />
-              Add Plant
+              Add New Plant
             </button>
           </div>
         </div>
       </div>
+
+      <div className=" mx-auto px-10 py-8">
+        {loading ? (
+          <div className="text-center py-12">
+            <Leaf size={48} className="mx-auto text-gray-400 mb-4" />
+            <p className="text-xl font-medium text-gray-900">
+              Loading plants...
+            </p>
+          </div>
+        ) : plants.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-3">
+            {plants.map((plant) => (
+              <div
+                key={plant.plant_id}
+                className="bg-white rounded-xl shadow-lg relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
+                <div className="p-6">
+                  <img
+                    src={` http://127.0.0.1:8000/api${plant.image_url}`}
+                    alt={plant.name}
+                    className="w-full h-40 object-cover rounded-lg mb-4"
+                  />
+                  <div className="flex justify-between items-start mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {plant.name}
+                    </h2>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEdit(plant)}
+                        className="p-2 text-gray-600 hover:text-green-600 transition-colors"
+                      >
+                        <Edit size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(plant.plant_id)}
+                        className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    {plant.description}
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                      <span className="text-sm text-gray-600">Price</span>
+                      <span className="font-medium text-green-600">
+                        ${plant.price}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                      <span className="text-sm text-gray-600">Stock</span>
+                      <span className="font-medium text-gray-900">
+                        {plant.stock}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Leaf size={48} className="mx-auto text-gray-400 mb-4" />
+            <p className="text-xl font-medium text-gray-900">
+              No plants available
+            </p>
+            <p className="text-gray-500 mt-2">Add some plants to get started</p>
+            <button
+              onClick={() => navigate("/nursery/add-plant")}
+              className="mt-6 inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Plus size={20} className="mr-2" />
+              Add Your First Plant
+            </button>
+          </div>
+        )}
+      </div>
+
+      {modalPlant && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4">Edit Plant</h3>
+            <input
+              type="text"
+              value={modalPlant.name}
+              onChange={(e) =>
+                setModalPlant({ ...modalPlant, name: e.target.value })
+              }
+              className="w-full mb-3 p-3 border border-gray-300 rounded-lg"
+              placeholder="Plant Name"
+            />
+            <textarea
+              value={modalPlant.description}
+              onChange={(e) =>
+                setModalPlant({ ...modalPlant, description: e.target.value })
+              }
+              className="w-full mb-3 p-3 border border-gray-300 rounded-lg"
+              placeholder="Description"
+              rows="4"
+            />
+            <input
+              type="number"
+              value={modalPlant.price}
+              onChange={(e) =>
+                setModalPlant({ ...modalPlant, price: e.target.value })
+              }
+              className="w-full mb-3 p-3 border border-gray-300 rounded-lg"
+              placeholder="Price"
+            />
+            <input
+              type="number"
+              value={modalPlant.stock}
+              onChange={(e) =>
+                setModalPlant({ ...modalPlant, stock: e.target.value })
+              }
+              className="w-full mb-3 p-3 border border-gray-300 rounded-lg"
+              placeholder="Stock"
+            />
+            <input
+              type="file"
+              onChange={(e) =>
+                setModalPlant({ ...modalPlant, image: e.target.files[0] })
+              }
+              className="w-full mb-3 p-3 border border-gray-300 rounded-lg"
+              placeholder="Upload New Image"
+            />
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={handleModalClose}
+                className="px-4 py-2 bg-gray-200 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleModalSave}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

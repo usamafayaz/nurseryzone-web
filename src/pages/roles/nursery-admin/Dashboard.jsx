@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Leaf,
@@ -9,26 +9,33 @@ import {
   MessageSquare,
   ArrowRight,
   Bike,
+  LogOut,
 } from "lucide-react";
+import LogoutModal from "../../../components/LogoutModal";
 
 const NurseryDashboard = () => {
   const navigate = useNavigate();
   let storedUserData = localStorage.getItem("userData");
   storedUserData = JSON.parse(storedUserData);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowModal(true);
+  };
 
   const menuItems = [
     {
-      title: "Manage Plants",
-      description: "Add, edit, and maintain your plant inventory",
+      title: "Add Plants",
+      description: "Add new plants to your inventory",
       icon: <Leaf size={24} />,
-      screen: "/nursery/manage-plants",
+      screen: "/nursery/add-plant",
       color: "bg-green-600",
     },
     {
-      title: "View Plants",
-      description: "Browse and search your plant collection",
+      title: "Manage Plants",
+      description: "Edit, delete and manage your plants inventory",
       icon: <Eye size={24} />,
-      screen: "/nursery/view-plants",
+      screen: "/nursery/manage-plants",
       color: "bg-green-600",
     },
     {
@@ -63,7 +70,6 @@ const NurseryDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Header Section */}
       <div className="bg-green-600 text-white py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -74,11 +80,16 @@ const NurseryDashboard = () => {
                 Manage your botanical business with ease
               </p>
             </div>
+            <button
+              className="absolute right-10 z-10"
+              onClick={handleLogoutClick}
+            >
+              <LogOut />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {menuItems.map((item, index) => (
@@ -109,8 +120,8 @@ const NurseryDashboard = () => {
           ))}
         </div>
       </div>
+      {showModal && <LogoutModal setShowModal={setShowModal} />}
 
-      {/* Decorative circles */}
       <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />

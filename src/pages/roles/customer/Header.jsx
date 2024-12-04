@@ -1,11 +1,17 @@
-import React from "react";
-import { Leaf, ShoppingCart, Search, List } from "lucide-react";
+import React, { useState } from "react";
+import { Leaf, ShoppingCart, Search, List, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../../store/cartStore";
+import LogoutModal from "../../../components/LogoutModal";
 
 const Header = ({ onSearchChange, searchTerm }) => {
   const navigate = useNavigate();
   const totalCartItems = useCartStore((state) => state.getTotalItems());
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowModal(true);
+  };
 
   return (
     <div className="bg-green-600 text-white py-4 px-6">
@@ -20,7 +26,6 @@ const Header = ({ onSearchChange, searchTerm }) => {
           </div>
         </div>
 
-        {/* Header Icons */}
         <div className="flex items-center space-x-4">
           {onSearchChange && (
             <div className="relative mx-4">
@@ -55,17 +60,24 @@ const Header = ({ onSearchChange, searchTerm }) => {
 
           <button
             onClick={() => navigate("/cart")}
-            className="text-white relative"
+            className="text-white relative hover:bg-green-700 p-2 rounded-lg"
           >
             <ShoppingCart size={24} />
             {totalCartItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {totalCartItems}
               </span>
             )}
           </button>
+          <button
+            onClick={handleLogoutClick}
+            className="text-white relative hover:bg-green-700 p-2 rounded-lg"
+          >
+            <LogOut size={24} />
+          </button>
         </div>
       </div>
+      {showModal && <LogoutModal setShowModal={setShowModal} />}
     </div>
   );
 };

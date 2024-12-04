@@ -52,7 +52,6 @@ const DeliveryBoy = () => {
 
   return (
     <div className="min-h-screen flex items-stretch bg-gradient-to-br from-green-50 to-white">
-      {/* Left Panel - Decorative */}
       <div className="hidden lg:flex lg:w-1/2 bg-green-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-black bg-opacity-20" />
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12">
@@ -64,14 +63,12 @@ const DeliveryBoy = () => {
             Add a delivery associate to streamline your nursery's operations
           </p>
         </div>
-        {/* Decorative circles */}
         <div className="absolute -bottom-32 -left-32 w-64 h-64 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -bottom-28 -left-28 w-56 h-56 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -top-32 -right-32 w-64 h-64 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -top-28 -right-28 w-56 h-56 border-4 border-white border-opacity-10 rounded-full" />
       </div>
 
-      {/* Right Panel - Signup Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
@@ -86,7 +83,6 @@ const DeliveryBoy = () => {
 
           <form className="mt-8 space-y-6" onSubmit={(e) => e.preventDefault()}>
             <div className="space-y-4">
-              {/* Name Input */}
               <div className="relative">
                 <User
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -102,7 +98,6 @@ const DeliveryBoy = () => {
                 />
               </div>
 
-              {/* Email Input */}
               <div className="relative">
                 <Mail
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -118,7 +113,6 @@ const DeliveryBoy = () => {
                 />
               </div>
 
-              {/* Password Input */}
               <div className="relative">
                 <Lock
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -134,7 +128,6 @@ const DeliveryBoy = () => {
                 />
               </div>
 
-              {/* Address Input */}
               <div className="relative">
                 <MapPin
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -150,7 +143,6 @@ const DeliveryBoy = () => {
                 />
               </div>
 
-              {/* Contact Number Input */}
               <div className="relative">
                 <Phone
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"

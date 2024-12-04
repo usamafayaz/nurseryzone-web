@@ -189,7 +189,6 @@ const NurseryRequests = () => {
           )}
         </div>
 
-        {/* Nursery Details Modal */}
         {selectedNursery && renderNurseryModal(selectedNursery)}
       </div>
     </div>

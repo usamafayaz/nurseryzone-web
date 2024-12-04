@@ -26,7 +26,6 @@ const Reviews = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white pb-8">
-      {/* Header Section */}
       <div className="bg-green-600 text-white py-6 px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
@@ -41,7 +40,6 @@ const Reviews = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         {reviews.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -50,10 +48,8 @@ const Reviews = () => {
                 key={review.order_id}
                 className="bg-white rounded-xl shadow-lg p-6 relative overflow-hidden"
               >
-                {/* Decorative element */}
                 <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
 
-                {/* Review Header */}
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h2 className="text-lg font-bold text-gray-900">
@@ -68,13 +64,11 @@ const Reviews = () => {
                   </span>
                 </div>
 
-                {/* Order ID */}
                 <p className="mb-4 text-sm text-gray-700">
                   <strong>Order ID:</strong> ORD-
                   {String(review.order_id).padStart(4, "0")}
                 </p>
 
-                {/* Comment */}
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <p className="text-gray-700">{review.comment}</p>
                 </div>
@@ -92,7 +86,6 @@ const Reviews = () => {
         )}
       </div>
 
-      {/* Decorative circles */}
       <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -bottom-28 -left-28 w-56 h-56 border-4 border-green-600 border-opacity-10 rounded-full" />
       <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />

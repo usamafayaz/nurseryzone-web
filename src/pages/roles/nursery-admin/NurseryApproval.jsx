@@ -7,7 +7,6 @@ const NurseryPendingApproval = () => {
 
   return (
     <div className="min-h-screen flex items-stretch bg-gradient-to-br from-green-50 to-white">
-      {/* Left Panel - Decorative */}
       <div className="hidden lg:flex lg:w-1/2 bg-green-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-black bg-opacity-20" />
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12">
@@ -19,14 +18,12 @@ const NurseryPendingApproval = () => {
             Your nursery application is being carefully evaluated by our team.
           </p>
         </div>
-        {/* Decorative circles - same as login page */}
         <div className="absolute -bottom-32 -left-32 w-64 h-64 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -bottom-28 -left-28 w-56 h-56 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -top-32 -right-32 w-64 h-64 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -top-28 -right-28 w-56 h-56 border-4 border-white border-opacity-10 rounded-full" />
       </div>
 
-      {/* Right Panel - Pending Approval Message */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8 text-center">
           <div className="bg-white shadow-lg rounded-xl p-8 border border-green-100">

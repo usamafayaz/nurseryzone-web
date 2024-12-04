@@ -4,7 +4,7 @@ import { Mail, Lock, ArrowRight, Leaf } from "lucide-react";
 import { useToaster } from "../../components/Toaster";
 
 const Login = () => {
-  const [email, setEmail] = useState("customer1@example.com");
+  const [email, setEmail] = useState("admin@gmail.com");
   const [password, setPassword] = useState("userpassword");
   const navigate = useNavigate();
   const addToast = useToaster();
@@ -21,7 +21,6 @@ const Login = () => {
       );
 
       if (!response.ok) {
-        // Check for specific 403 status for nursery pending approval
         if (response.status === 403) {
           const errorData = await response.json();
           if (errorData.detail === "Permission denied") {
@@ -30,7 +29,6 @@ const Login = () => {
           }
         }
 
-        // Generic error handling for other non-successful responses
         addToast("Invalid credentials, please try again.", "error");
         return;
       }
@@ -42,7 +40,6 @@ const Login = () => {
       localStorage.setItem("userData", JSON.stringify(result));
       addToast("Login successful!", "success");
 
-      // Navigate to the appropriate dashboard based on role
       if (result.role.toLowerCase() === "admin") {
         navigate("/admin/dashboard");
       } else if (result.role.toLowerCase() === "nursery") {
@@ -59,7 +56,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-stretch bg-gradient-to-br from-green-50 to-white">
-      {/* Left Panel - Decorative */}
       <div className="hidden lg:flex lg:w-1/2 bg-green-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-black bg-opacity-20" />
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12">
@@ -72,14 +68,12 @@ const Login = () => {
             gardening knowledge.
           </p>
         </div>
-        {/* Decorative circles */}
         <div className="absolute -bottom-32 -left-32 w-64 h-64 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -bottom-28 -left-28 w-56 h-56 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -top-32 -right-32 w-64 h-64 border-4 border-white border-opacity-10 rounded-full" />
         <div className="absolute -top-28 -right-28 w-56 h-56 border-4 border-white border-opacity-10 rounded-full" />
       </div>
 
-      {/* Right Panel - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
