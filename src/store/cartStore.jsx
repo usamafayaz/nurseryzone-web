@@ -66,12 +66,12 @@ const useCartStore = create(
           0
         );
       },
-    }),
-    {
-      name: "plant-cart-storage", // unique name
-      // storage: createJSONStorage(() => localStorage), // persist in localStorage
-      partialize: (state) => ({ cart: state.cart }), // Only store cart in localStorage
-    }
+    })
+    // {
+    //   name: "plant-cart-storage", // unique name
+    //   // storage: createJSONStorage(() => localStorage), // persist in localStorage
+    //   partialize: (state) => ({ cart: state.cart }), // Only store cart in localStorage
+    // }
   )
 );
 

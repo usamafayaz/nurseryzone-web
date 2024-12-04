@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Plus, Minus, MessageSquare } from "lucide-react";
+import { Plus, Minus, MessageSquare, Quote, UserCircle2 } from "lucide-react";
 import useCartStore from "../../../store/cartStore";
 import Header from "./Header";
 
@@ -43,28 +43,31 @@ const ProductDetails = () => {
     navigate("/cart");
   };
 
+  const generatePastelBackground = () => {
+    const hue = Math.floor(Math.random() * 360);
+    return `hsl(${hue}, 70%, 80%)`;
+  };
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col  bg-gradient-to-br from-green-50 to-white">
       <Header />
-      <div className="flex flex-1 overflow-hidden">
-        <div className="w-1/2 bg-green-100 flex items-center justify-center">
+      <div className="flex flex-1 overflow-hidden container mx-auto px-4 pb-8">
+        <div className="w-1/2 bg-green-50 rounded-2xl flex items-center justify-center px-8">
           <img
             src={`http://localhost:8000/api${plant.image_url}`}
             alt={plant.name}
-            className="max-w-[80%] max-h-[80%] object-contain shadow-lg rounded-lg"
+            className="max-w-[80%] max-h-[80%] object-contain shadow-xl rounded-2xl transform transition hover:scale-105"
           />
         </div>
 
         <div className="w-1/2 flex flex-col justify-center px-12 space-y-4">
           <div>
             <h1 className="text-4xl font-bold text-green-900 mb-2">
-              Title: {plant.name}
+              {plant.name}
             </h1>
-            <p className="text-gray-600 mb-4">
-              Description: {plant.description}
-            </p>
+            <p className="text-gray-600 mb-4">{plant.description}</p>
             <div className="text-3xl font-extrabold text-green-800 mb-4">
-              Price: {plant.price} Rs
+              Rs. {plant.price}
             </div>
           </div>
 
@@ -109,44 +112,72 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      <div className=" px-6 py-8">
-        {reviews.length > 0 ? (
-          <>
-            <h1 className="text-2xl font-bold pb-6">Customer Reviews</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {reviews.map((review) => (
-                <div
-                  key={review.order_id}
-                  className="bg-white rounded-xl shadow-lg p-6 relative overflow-hidden"
-                >
-                  <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
-
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h2 className="text-lg font-bold text-gray-900">
-                        {review.name}
-                      </h2>
+      <div className="px-12 py-12 bg-green-50/50">
+        <div className="container mx-auto">
+          {reviews.length > 0 ? (
+            <>
+              <h2 className="text-3xl font-bold text-green-900 mb-8 flex items-center">
+                <MessageSquare size={36} className="mr-4 text-green-600" />
+                Customer Experiences
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {reviews.map((review, index) => (
+                  <div
+                    key={review.order_id}
+                    className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition hover:scale-105 hover:shadow-xl"
+                  >
+                    <div
+                      className="h-2 w-full"
+                      style={{ backgroundColor: generatePastelBackground() }}
+                    />
+                    <div className="p-6">
+                      <div className="flex items-center mb-4">
+                        <div
+                          className="w-12 h-12 rounded-full mr-4 flex items-center justify-center"
+                          style={{
+                            backgroundColor: generatePastelBackground(),
+                          }}
+                        >
+                          <UserCircle2 size={32} className="text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-lg text-gray-900">
+                            {review.name}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {new Date(review.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="relative pl-6">
+                        <Quote
+                          className="absolute left-0 top-0 text-green-300 opacity-50"
+                          size={24}
+                        />
+                        <p className="text-gray-700 italic">
+                          "{review.comment}"
+                        </p>
+                      </div>
                     </div>
-                    <span className="text-sm text-gray-600">
-                      {new Date(review.created_at).toLocaleDateString()}
-                    </span>
                   </div>
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <p className="text-gray-700">{review.comment}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+              <MessageSquare
+                size={64}
+                className="mx-auto text-green-300 mb-6"
+              />
+              <p className="text-2xl font-semibold text-gray-900 mb-4">
+                No experiences shared yet
+              </p>
+              <p className="text-gray-600 max-w-md mx-auto">
+                Be the first to share your thoughts about this beautiful plant!
+              </p>
             </div>
-          </>
-        ) : (
-          <div className="text-center py-12">
-            <MessageSquare size={48} className="mx-auto text-gray-400 mb-4" />
-            <p className="text-xl font-medium text-gray-900">No reviews yet</p>
-            <p className="text-gray-500 mt-2">
-              Customer reviews will appear here
-            </p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
