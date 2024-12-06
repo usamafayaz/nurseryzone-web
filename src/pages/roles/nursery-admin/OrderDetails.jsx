@@ -121,7 +121,7 @@ const OrderDetails = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setOrders(data);
+          setOrders(data.reverse());
         }
       } catch (err) {
         setError(err.message);

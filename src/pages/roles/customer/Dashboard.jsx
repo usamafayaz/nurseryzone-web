@@ -5,7 +5,6 @@ import ProductCard from "../../../components/ProductCard";
 import Header from "./Header";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +23,7 @@ const Dashboard = () => {
         `http://localhost:8000/api/nursery/plants?skip=${0}&limit=${20}`
       );
       const data = await response.json();
-      setPlants(data);
+      setPlants(data.reverse());
     } catch (error) {
       console.error("Error fetching plants:", error);
     } finally {

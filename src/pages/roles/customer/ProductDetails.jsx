@@ -13,6 +13,7 @@ const ProductDetails = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchReviews();
   }, []);
 
@@ -51,7 +52,7 @@ const ProductDetails = () => {
   return (
     <div className="flex flex-col  bg-gradient-to-br from-green-50 to-white">
       <Header />
-      <div className="flex flex-1 overflow-hidden container mx-auto px-4 pb-8">
+      <div className="flex flex-1 overflow-hidden container mx-auto px-4 p-8">
         <div className="w-1/2 bg-green-50 rounded-2xl flex items-center justify-center px-8">
           <img
             src={`http://localhost:8000/api${plant.image_url}`}
