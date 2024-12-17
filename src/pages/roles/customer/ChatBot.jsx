@@ -213,7 +213,7 @@ const FormattedText = ({ text, isUser }) => {
         return (
           <div
             key={lineIndex}
-            className="relative bg-white bg-opacity-10 rounded-md p-4 mb-3 group"
+            className="relative bg-slate-500 bg-opacity-10 rounded-md p-4 mb-3 group"
           >
             <pre
               className={`text-sm font-mono whitespace-pre-wrap ${
