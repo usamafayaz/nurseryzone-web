@@ -83,18 +83,18 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-emerald-50 to-white relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-emerald-200 to-green-100 pointer-events-none" />
+    <div className="bg-gradient-to-br from-green-50 to-white relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-green-200 to-green-100 pointer-events-none" />
 
-      <div className="bg-emerald-600 text-white py-4 px-6 shadow-md relative z-10">
+      <div className="bg-green-600 text-white py-4 px-6 shadow-md relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center space-x-4">
-            <Sparkles size={32} className="text-emerald-200" />
+            <Sparkles size={32} className="text-green-200" />
             <div>
               <h1 className="text-2xl font-bold tracking-tight">
                 AI Plant Companion
               </h1>
-              <p className="text-emerald-100 mt-1 text-sm">
+              <p className="text-green-100 mt-1 text-sm">
                 Your intelligent gardening assistant
               </p>
             </div>
@@ -103,14 +103,14 @@ const ChatBot = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-8 relative z-20">
-        <div className="bg-white rounded-2xl shadow-2xl border border-emerald-50 p-8 relative overflow-hidden min-h-[500px] flex flex-col">
-          <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600" />
+        <div className="bg-white rounded-2xl shadow-2xl border border-green-50 p-8 relative overflow-hidden min-h-[500px] flex flex-col">
+          <div className="absolute top-0 left-0 w-2 h-full bg-green-600" />
 
           <div className="flex-1 overflow-y-auto space-y-4 mb-6 pr-2">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="flex justify-center mb-4 text-emerald-600">
+                  <div className="flex justify-center mb-4 text-green-600">
                     <Bot size={56} strokeWidth={1.5} />
                   </div>
                   <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -134,7 +134,7 @@ const ChatBot = () => {
                   <div
                     className={`max-w-[85%] p-4 rounded-xl shadow-sm transition-all ${
                       message.user
-                        ? "bg-emerald-600 text-white"
+                        ? "bg-green-600 text-white"
                         : "bg-gray-50 border border-gray-100"
                     }`}
                   >
@@ -146,7 +146,7 @@ const ChatBot = () => {
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-300 border-t-emerald-600" />
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-300 border-t-green-600" />
                   <span className="text-gray-600 text-sm">Thinking...</span>
                 </div>
               </div>
@@ -165,12 +165,12 @@ const ChatBot = () => {
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="Ask about plants, gardening, or care tips..."
-              className="w-full pl-12 pr-16 py-3 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-300 transition-all duration-200 ease-in-out"
+              className="w-full pl-12 pr-16 py-3 border border-green-200 rounded-lg focus:ring-2 focus:ring-green-300 transition-all duration-200 ease-in-out"
             />
             <button
               onClick={handleSend}
               disabled={isLoading || !inputText.trim()}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send size={20} />
             </button>
@@ -178,8 +178,8 @@ const ChatBot = () => {
         </div>
       </div>
 
-      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-emerald-600 border-opacity-10 rounded-full" />
-      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-emerald-600 border-opacity-10 rounded-full" />
+      <div className="fixed -bottom-32 -left-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
+      <div className="fixed -top-32 -right-32 w-64 h-64 border-4 border-green-600 border-opacity-10 rounded-full" />
     </div>
   );
 };
