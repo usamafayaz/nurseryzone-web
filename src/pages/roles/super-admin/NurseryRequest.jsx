@@ -10,9 +10,6 @@ const NurseryRequests = () => {
   }, []);
 
   const handleRequestAction = async (nurseryId, action) => {
-    console.log(typeof nurseryId);
-    console.log(nurseryId);
-
     setNurseryRequests((prev) =>
       prev.filter((req) => req.nursery_id !== nurseryId)
     );
@@ -33,7 +30,6 @@ const NurseryRequests = () => {
   };
 
   const getNurseryRequests = async () => {
-    console.log("Fetching Data from DB");
     try {
       const response = await fetch(
         "http://localhost:8000/api/nursery/request?pending_request=true&skip=0&limit=20"

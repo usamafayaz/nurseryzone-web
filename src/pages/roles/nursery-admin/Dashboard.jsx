@@ -39,14 +39,14 @@ const NurseryDashboard = () => {
       color: "bg-green-600",
     },
     {
-      title: "Orders",
+      title: "Manage Orders",
       description: "Track and manage customer orders",
       icon: <ShoppingCart size={24} />,
-      screen: "/nursery/order-details",
+      screen: "/nursery/manage-orders",
       color: "bg-green-600",
     },
     {
-      title: "Reviews",
+      title: "Customer Reviews",
       description: "Monitor customer feedback and ratings",
       icon: <Star size={24} />,
       screen: "/nursery/reviews",

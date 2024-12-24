@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Package, Calendar, User } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
 
-const OrderDetails = () => {
+const ManageOrders = () => {
   const [orders, setOrders] = useState([]);
   const [deliveryBoys, setDeliveryBoys] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -140,7 +140,7 @@ const OrderDetails = () => {
           <div className="flex items-center space-x-4">
             <Package size={32} />
             <div>
-              <h1 className="text-xl font-bold">Order Details</h1>
+              <h1 className="text-xl font-bold">Manage Orders</h1>
               <p className="text-green-100 mt-1">
                 View and manage customer orders
               </p>
@@ -297,4 +297,4 @@ const OrderDetails = () => {
   );
 };
 
-export default OrderDetails;
+export default ManageOrders;
