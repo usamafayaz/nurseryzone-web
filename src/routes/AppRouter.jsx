@@ -9,7 +9,7 @@ import SignupLanding from "../pages/auth/SignupLanding";
 import NurseryDashboard from "../pages/roles/nursery-admin/Dashboard";
 import AddPlant from "../pages/roles/nursery-admin/AddPlant";
 import ManagePlants from "../pages/roles/nursery-admin/ManagePlants";
-import OrderDetails from "../pages/roles/nursery-admin/OrderDetails";
+import ManageOrders from "../pages/roles/nursery-admin/ManageOrders";
 import Reviews from "../pages/roles/nursery-admin/Reviews";
 import CustomersList from "../pages/roles/nursery-admin/Customers";
 import NurseryPendingApproval from "../pages/roles/nursery-admin/NurseryApproval";
@@ -23,7 +23,7 @@ import CustomerDashboard from "../pages/roles/customer/Dashboard";
 import CartScreen from "../pages/roles/customer/Cart";
 import ProductDetails from "../pages/roles/customer/ProductDetails";
 import CheckoutScreen from "../pages/roles/customer/Checkout";
-import OrderHistory from "../pages/roles/customer/OrderHistory";
+import TrackOrders from "../pages/roles/customer/TrackOrders";
 import DeliveryBoy from "../pages/roles/nursery-admin/DeliveryBoy";
 import DeliveryBoyDashboard from "../pages/roles/delivery-man/Dashboard";
 
@@ -40,7 +40,7 @@ const AppRouter = () => {
         <Route path="/nursery/dashboard" element={<NurseryDashboard />} />
         <Route path="/nursery/add-plant" element={<AddPlant />} />
         <Route path="/nursery/manage-plants" element={<ManagePlants />} />
-        <Route path="/nursery/order-details" element={<OrderDetails />} />
+        <Route path="/nursery/manage-orders" element={<ManageOrders />} />
         <Route path="/nursery/reviews" element={<Reviews />} />
         <Route path="/nursery/customers" element={<CustomersList />} />
         <Route path="/nursery/delivery-boy" element={<DeliveryBoy />} />
@@ -55,7 +55,7 @@ const AppRouter = () => {
         <Route path="/cart" element={<CartScreen />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<CheckoutScreen />} />
-        <Route path="/order-history" element={<OrderHistory />} />
+        <Route path="/track-orders" element={<TrackOrders />} />
 
         {/* Super Admin */}
         <Route path="/admin/dashboard" element={<SuperAdminDashboard />} />

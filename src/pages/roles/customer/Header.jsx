@@ -54,7 +54,7 @@ const Header = ({ onSearchChange, searchTerm }) => {
 
           {/* New Order History Button */}
           <button
-            onClick={() => navigate("/order-history")}
+            onClick={() => navigate("/track-orders")}
             className="text-white hover:bg-green-700 p-2 rounded-lg transition"
           >
             <List size={24} />

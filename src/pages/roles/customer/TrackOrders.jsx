@@ -13,7 +13,7 @@ import {
 import { useToaster } from "../../../components/Toaster";
 import { BiMoney } from "react-icons/bi";
 
-const OrderHistory = () => {
+const TrackOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,7 +44,7 @@ const OrderHistory = () => {
         );
         if (response.ok) {
           const data = await response.json();
-          setOrders(data);
+          setOrders(data.reverse());
         }
       } catch (err) {
         setError(err.message);
@@ -273,4 +273,4 @@ const OrderHistory = () => {
   );
 };
 
-export default OrderHistory;
+export default TrackOrders;
