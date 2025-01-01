@@ -1,4 +1,3 @@
-// src/routes/AppRouter.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -11,7 +10,6 @@ import AddPlant from "../pages/roles/nursery-admin/AddPlant";
 import ManagePlants from "../pages/roles/nursery-admin/ManagePlants";
 import ManageOrders from "../pages/roles/nursery-admin/ManageOrders";
 import Reviews from "../pages/roles/nursery-admin/Reviews";
-import CustomersList from "../pages/roles/nursery-admin/Customers";
 import NurseryPendingApproval from "../pages/roles/nursery-admin/NurseryApproval";
 import ChatBot from "../pages/roles/customer/ChatBot";
 
@@ -42,7 +40,6 @@ const AppRouter = () => {
         <Route path="/nursery/manage-plants" element={<ManagePlants />} />
         <Route path="/nursery/manage-orders" element={<ManageOrders />} />
         <Route path="/nursery/reviews" element={<Reviews />} />
-        <Route path="/nursery/customers" element={<CustomersList />} />
         <Route path="/nursery/delivery-boy" element={<DeliveryBoy />} />
         <Route
           path="/nursery/pending-approval"

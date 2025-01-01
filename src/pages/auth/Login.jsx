@@ -4,8 +4,8 @@ import { Mail, Lock, ArrowRight, Leaf } from "lucide-react";
 import { useToaster } from "../../components/Toaster";
 
 const Login = () => {
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("userpassword");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const addToast = useToaster();
 

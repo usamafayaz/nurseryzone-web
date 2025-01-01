@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { MessageSquare, Send, Copy, Bot, Leaf, Sparkles } from "lucide-react";
+import { MessageSquare, Send, Copy, Bot, Sparkles } from "lucide-react";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);

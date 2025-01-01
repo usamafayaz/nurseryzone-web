@@ -6,14 +6,7 @@ import LogoutModal from "../../../components/LogoutModal";
 const DeliveryDasboard = () => {
   const [deliveries, setDeliveries] = useState([]);
   const addToast = useToaster();
-  const [statusOptions] = useState([
-    // "Pending",
-    // "Processing",
-    // "Shipped",
-    "Choose Status",
-    "Delivered",
-    "Cancelled",
-  ]);
+  const [statusOptions] = useState(["Choose Status", "Delivered", "Cancelled"]);
   const [showModal, setShowModal] = useState(false);
 
   const handleLogoutClick = () => {

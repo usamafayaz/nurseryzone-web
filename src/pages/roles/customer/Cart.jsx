@@ -1,13 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ShoppingCart,
-  ChevronLeft,
-  Plus,
-  Minus,
-  Trash2,
-  Heart,
-} from "lucide-react";
+import { ShoppingCart, ChevronLeft, Plus, Minus, Trash2 } from "lucide-react";
 import useCartStore from "../../../store/cartStore";
 
 const CartScreen = () => {
