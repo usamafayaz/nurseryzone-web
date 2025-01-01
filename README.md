@@ -1,70 +1,139 @@
-# Getting Started with Create React App
+# 🌱 Nursery Zone Web
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Nursery Zone Web** is a React-based web application designed to streamline plant nursery operations. It provides an efficient platform for nurseries to manage their products, customers to place orders, and delivery personnel to track and deliver orders. The app features a role-based access system with a user-friendly interface, ensuring a seamless experience for all users.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+### Role-Based Access:
 
-### `npm start`
+- **Super Admin**:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  - Approves or rejects nursery registration requests.
+  - Manages analytics and overall platform monitoring.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Nursery Admin**:
 
-### `npm test`
+  - Manages plant inventory (add, update, delete plants).
+  - Tracks and updates the status of customer orders.
+  - Registers their own delivery personnel.
+  - Assigns delivery personnel for orders.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Customer**:
 
-### `npm run build`
+  - Browses plants from all nurseries and filters them.
+  - Places orders for plants.
+  - Tracks order status.
+  - Provides reviews for purchased products.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Delivery Personnel**:
+  - Views assigned orders.
+  - Updates the order status to "Delivered" upon successful delivery.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Additional Features:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Nursery Registration Workflow**:
+  - Nurseries can sign up, and their requests are reviewed and approved/rejected by the Super Admin.
+- **Customer Order Management**:
+  - End-to-end tracking of orders, from placement to delivery.
+- **Customer Reviews**:
+  - Customers leave reviews after receiving the order.
+  - Reviews are visible to other customers and Nursery Admins.
+- **Chatbot Integration**:
+  - Customers can get instant information about plants via an integrated chatbot.
+  - The chatbot uses the **Gemini API** in the backend for seamless and intelligent conversations.
 
-### `npm run eject`
+## 🛠️ Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Frontend:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **React**:
+  - Framework for building the web app.
+  - User-friendly design with a seamless experience.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Backend:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **FastAPI**:
+  - Lightweight and fast backend framework.
+  - Handles user authentication, order management, and analytics.
+- **Gemini API**:
+  - Powers the chatbot for intelligent plant-related conversations.
 
-## Learn More
+## 📱 Application Workflow
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Nursery Registration**:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   - Nursery Admins sign up via the web app.
+   - Super Admin reviews and approves/rejects the signup request.
 
-### Code Splitting
+2. **Plant Management**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   - Approved Nursery Admins log in to add and manage their plants.
 
-### Analyzing the Bundle Size
+3. **Customer Orders**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   - Customers browse plants, add them to their cart, and place orders.
+   - Nursery Admins update the order status (e.g., processing, shipped).
 
-### Making a Progressive Web App
+4. **Delivery Management**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   - Nursery Admin assigns orders to delivery personnel.
+   - Delivery personnel update the order status to "Delivered" or "Cancelled".
 
-### Advanced Configuration
+5. **Chatbot Assistance**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   - Customers can ask the chatbot questions about plants (e.g., care tips, delivery details).
+   - The chatbot leverages the Gemini API to provide real-time answers.
 
-### Deployment
+6. **Customer Reviews**:
+   - Customers leave reviews after receiving the order.
+   - Reviews are visible to other customers and the Nursery Admin.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🔧 Installation
 
-### `npm run build` fails to minify
+### Prerequisites:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Node.js installed on your machine.
+- Python environment for FastAPI backend.
+
+## Screenshots
+
+![Alt text](.src/assets/screenshots/1.png)
+![Alt text](.src/assets/screenshots/2.png)
+![Alt text](.src/assets/screenshots/3.png)
+![Alt text](.src/assets/screenshots/4.png)
+![Alt text](.src/assets/screenshots/5.png)
+![Alt text](.src/assets/screenshots/6.png)
+![Alt text](.src/assets/screenshots/7.png)
+![Alt text](.src/assets/screenshots/8.png)
+![Alt text](.src/assets/screenshots/9.png)
+![Alt text](.src/assets/screenshots/10.png)
+
+### Frontend Setup:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/usamafayaz/nurseryzone-web.git
+
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd nurseryzone-web
+   ```
+
+3. Install React Native packages and dependencies:
+   ```bash
+   npm install
+   ```
+4. Setup your Gemini API_KEY
+
+5. Start the React Native frontend:
+   ```bash
+   npm start
+   ```
+
+## Contact
+
+For any inquiries, please contact [usama.fayyaz157@gmail.com].
