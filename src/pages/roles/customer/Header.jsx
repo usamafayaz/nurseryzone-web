@@ -52,7 +52,6 @@ const Header = ({ onSearchChange, searchTerm }) => {
             Plant Assistant
           </button>
 
-          {/* New Order History Button */}
           <button
             onClick={() => navigate("/track-orders")}
             className="text-white hover:bg-green-700 p-2 rounded-lg transition"

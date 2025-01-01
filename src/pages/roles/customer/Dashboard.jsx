@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import ProductCard from "../../../components/ProductCard";
 import Header from "./Header";
 
@@ -8,10 +7,6 @@ const Dashboard = () => {
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
-  // // Use Zustand hook to get cart items and total items
-  // const cart = useCartStore((state) => state.cart);
-  // const totalCartItems = useCartStore((state) => state.getTotalItems());
 
   useEffect(() => {
     fetchPlants();

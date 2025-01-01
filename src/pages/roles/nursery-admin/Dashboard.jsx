@@ -5,7 +5,6 @@ import {
   Eye,
   ShoppingCart,
   Star,
-  Users,
   MessageSquare,
   ArrowRight,
   Bike,

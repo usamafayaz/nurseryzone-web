@@ -8,13 +8,7 @@ const ManageOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const addToast = useToaster();
-  const [statusOptions] = useState([
-    "Pending",
-    "Processing",
-    "Shipped",
-    // "Delivered",
-    // "Cancelled",
-  ]);
+  const [statusOptions] = useState(["Pending", "Processing", "Shipped"]);
 
   let storedUserData = localStorage.getItem("userData");
   storedUserData = JSON.parse(storedUserData);
@@ -76,7 +70,6 @@ const ManageOrders = () => {
         throw new Error("Failed to update order status.");
       }
 
-      // Update the local state with the new status
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.order_id === orderId ? { ...order, Status: newStatus } : order

@@ -97,16 +97,16 @@
 
 ## Screenshots
 
-![Alt text](.src/assets/screenshots/1.png)
-![Alt text](.src/assets/screenshots/2.png)
-![Alt text](.src/assets/screenshots/3.png)
-![Alt text](.src/assets/screenshots/4.png)
-![Alt text](.src/assets/screenshots/5.png)
-![Alt text](.src/assets/screenshots/6.png)
-![Alt text](.src/assets/screenshots/7.png)
-![Alt text](.src/assets/screenshots/8.png)
-![Alt text](.src/assets/screenshots/9.png)
-![Alt text](.src/assets/screenshots/10.png)
+![Alt text](src/assets/screenshots/1.png)
+![Alt text](src/assets/screenshots/2.png)
+![Alt text](src/assets/screenshots/3.png)
+![Alt text](src/assets/screenshots/4.png)
+![Alt text](src/assets/screenshots/5.png)
+![Alt text](src/assets/screenshots/6.png)
+![Alt text](src/assets/screenshots/7.png)
+![Alt text](src/assets/screenshots/8.png)
+![Alt text](src/assets/screenshots/9.png)
+![Alt text](src/assets/screenshots/10.png)
 
 ### Frontend Setup:
 
