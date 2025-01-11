@@ -35,7 +35,6 @@ const Signup = () => {
       is_nursery: role === "Customer" ? false : true,
       contact_number: contactNumber,
     };
-    console.log("Signup with:", { data });
 
     const response = await fetch("http://localhost:8000/api/user", {
       method: "POST",

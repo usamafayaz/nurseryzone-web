@@ -32,7 +32,6 @@ const DeliveryBoy = () => {
       contact_number: contactNumber,
       nursery_id: storedUserData.user_id,
     };
-    console.log(data);
 
     const response = await fetch("http://localhost:8000/api/delivery/boy", {
       method: "POST",

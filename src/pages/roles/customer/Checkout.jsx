@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapPin, ChevronLeft, ShoppingCart, CreditCard } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
+import useCartStore from "../../../store/cartStore";
 
 const CheckoutScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 };
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
 
   // Get stored user data from localStorage
   let storedUserData = localStorage.getItem("userData");
@@ -24,7 +26,6 @@ const CheckoutScreen = () => {
         plant_id: cart[0].plant_id,
         quantity: cart[0].quantity,
       };
-      console.log(orderData);
 
       const response = await fetch("http://localhost:8000/api/order", {
         method: "POST",
@@ -35,6 +36,8 @@ const CheckoutScreen = () => {
       });
 
       if (response.ok) {
+        removeFromCart(cart[0].plant_id);
+
         addToast("Order placed successfully!", "success");
         navigate("/customer/dashboard");
       } else {

@@ -32,10 +32,7 @@ const ManageOrders = () => {
           ...result,
         ];
         setDeliveryBoys(allBoys);
-        console.log(deliveryBoys);
       } else if (response.status == 404) {
-        console.log("aalu");
-
         setDeliveryBoys([
           {
             delivery_boy_id: 90,
@@ -96,7 +93,6 @@ const ManageOrders = () => {
       addToast("Delivery Scheduled Successfully! ", "success");
     } catch (err) {
       console.log(err);
-
       setError(err.message);
     }
   };

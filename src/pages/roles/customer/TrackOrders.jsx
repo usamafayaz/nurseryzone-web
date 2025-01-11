@@ -58,11 +58,6 @@ const TrackOrders = () => {
 
   const handleFeedbackSubmit = async () => {
     try {
-      console.log({
-        order_id: selectedOrder.order_id,
-        comment: comment,
-      });
-
       const response = await fetch("http://localhost:8000/api/feedback", {
         method: "POST",
         headers: {

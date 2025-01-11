@@ -6,7 +6,6 @@ const LogoutModal = ({ setShowModal }) => {
   const navigate = useNavigate();
 
   const handleLogoutConfirm = () => {
-    console.log("Logging out...");
     navigate("/");
     localStorage.removeItem("userData");
     localStorage.removeItem("plant-cart-storage");

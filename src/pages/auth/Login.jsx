@@ -4,8 +4,8 @@ import { Mail, Lock, ArrowRight, Leaf } from "lucide-react";
 import { useToaster } from "../../components/Toaster";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("sarmad@gmail.com");
+  const [password, setPassword] = useState("userpassword");
   const navigate = useNavigate();
   const addToast = useToaster();
 
@@ -38,9 +38,7 @@ const Login = () => {
       }
 
       const result = await response.json();
-      console.log(result);
 
-      // Save the result object in localStorage
       localStorage.setItem("userData", JSON.stringify(result));
       addToast("Login successful!", "success");
 
