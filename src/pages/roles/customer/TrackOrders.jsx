@@ -44,6 +44,8 @@ const TrackOrders = () => {
         );
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
+
           setOrders(data.reverse());
         }
       } catch (err) {
@@ -170,12 +172,12 @@ const TrackOrders = () => {
                     </span>
                   </div>
 
-                  <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-lg">
+                  {/* <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-lg">
                     <User size={16} className="text-gray-400 mr-2" />
                     <p className="text-sm font-medium text-gray-900">
-                      Customer
+                      {order.user_name}Ssadsa
                     </p>
-                  </div>
+                  </div> */}
 
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">

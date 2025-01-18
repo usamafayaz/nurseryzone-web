@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Package, Calendar, User } from "lucide-react";
+import { Package, Calendar, User, PhoneForwarded, Home } from "lucide-react";
 import { useToaster } from "../../../components/Toaster";
 
 const ManageOrders = () => {
@@ -184,7 +184,21 @@ const ManageOrders = () => {
                   <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-lg">
                     <User size={16} className="text-gray-400 mr-2" />
                     <p className="text-sm font-medium text-gray-900">
-                      Customer
+                      {order.user_name}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-lg">
+                    <Home size={16} className="text-gray-400 mr-2" />
+                    <p className="text-sm font-medium text-gray-900">
+                      {order.user_address}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center mb-4 p-3 bg-gray-50 rounded-lg">
+                    <PhoneForwarded size={16} className="text-gray-400 mr-2" />
+                    <p className="text-sm font-medium text-gray-900">
+                      {order.user_contact_no}
                     </p>
                   </div>
 
