@@ -5,7 +5,6 @@ import {
   XCircle,
   Package,
   Calendar,
-  User,
   Send,
   X,
   MessageSquare,

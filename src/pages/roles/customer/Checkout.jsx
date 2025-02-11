@@ -1,30 +1,155 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapPin, ChevronLeft, ShoppingCart, CreditCard } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 import { useToaster } from "../../../components/Toaster";
 import useCartStore from "../../../store/cartStore";
+
+let stripePromise = null;
+
+const PaymentForm = ({
+  totalPrice,
+  handleOrderSubmit,
+  processingPayment,
+  clientSecret,
+}) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [cardError, setCardError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!stripe || !elements || !clientSecret) return;
+
+    try {
+      setCardError(null);
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement),
+            billing_details: {
+              // You can add billing details here if needed
+            },
+          },
+        }
+      );
+
+      if (error) {
+        setCardError(error.message);
+        return;
+      }
+
+      if (paymentIntent.status === "succeeded") {
+        await handleOrderSubmit(paymentIntent.payment_method);
+      }
+    } catch (err) {
+      setCardError("Payment processing failed. Please try again.");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <CardElement
+          options={{
+            hidePostalCode: true,
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
+              },
+            },
+          }}
+          className="p-3 border rounded-lg"
+        />
+      </div>
+      {cardError && <div className="text-red-500 mb-4">{cardError}</div>}
+      <button
+        type="submit"
+        disabled={!stripe || !clientSecret || processingPayment}
+        className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center disabled:bg-gray-400"
+      >
+        {processingPayment
+          ? "Processing..."
+          : `Pay Rs. ${totalPrice.toFixed(2)}`}
+      </button>
+    </form>
+  );
+};
 
 const CheckoutScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 };
   const removeFromCart = useCartStore((state) => state.removeFromCart);
-
-  // Get stored user data from localStorage
-  let storedUserData = localStorage.getItem("userData");
-  storedUserData = JSON.parse(storedUserData);
-  const addToast = useToaster();
   const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [processingPayment, setProcessingPayment] = useState(false);
+  const [paymentConfig, setPaymentConfig] = useState({
+    clientSecret: null,
+    publishableKey: null,
+  });
+  const addToast = useToaster();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  let storedUserData = JSON.parse(localStorage.getItem("userData"));
 
+  useEffect(() => {
+    if (paymentMethod === "CARD") {
+      createPaymentIntent();
+    }
+  }, [paymentMethod]);
+
+  const createPaymentIntent = async () => {
     try {
-      // Prepare order data
+      const response = await fetch("http://localhost:8000/api/create-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Math.round(totalPrice),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Payment intent creation failed");
+      }
+
+      const data = await response.json();
+      setPaymentConfig({
+        clientSecret: data.clientSecret,
+        publishableKey: data.publishableKey,
+      });
+
+      // Initialize Stripe with the publishable key from backend
+      stripePromise = loadStripe(data.publishableKey);
+    } catch (error) {
+      addToast("Failed to initialize payment: " + error.message, "error");
+      setPaymentMethod("COD");
+    }
+  };
+
+  const handleOrderSubmit = async (paymentMethodId = null) => {
+    setProcessingPayment(true);
+    try {
       const orderData = {
         user_id: storedUserData.user_id,
         plant_id: cart[0].plant_id,
         quantity: cart[0].quantity,
+        payment_method: paymentMethod,
+        payment_method_id: paymentMethodId,
       };
 
       const response = await fetch("http://localhost:8000/api/order", {
@@ -37,14 +162,17 @@ const CheckoutScreen = () => {
 
       if (response.ok) {
         removeFromCart(cart[0].plant_id);
-
         addToast("Order placed successfully!", "success");
         navigate("/customer/dashboard");
       } else {
-        addToast("Order Submission Failed!", "error");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Order submission failed");
       }
     } catch (error) {
+      addToast(error.message || "Error processing order!", "error");
       console.error("Checkout error:", error);
+    } finally {
+      setProcessingPayment(false);
     }
   };
 
@@ -74,6 +202,7 @@ const CheckoutScreen = () => {
       </button>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Personal Information Section */}
         <div className="bg-white shadow-lg rounded-xl p-8 space-y-6">
           <div>
             <h3 className="text-xl font-semibold mb-4 flex items-center">
@@ -122,45 +251,73 @@ const CheckoutScreen = () => {
             </div>
           </div>
 
+          {/* Payment Method Selection */}
           <div>
             <h3 className="text-xl font-semibold mb-4 flex items-center">
               <CreditCard className="mr-2 text-green-600" /> Payment Method
             </h3>
-            <div className="flex items-center">
-              <input
-                type="radio"
-                id="cod"
-                name="paymentMethod"
-                value="COD"
-                checked={paymentMethod === "COD"}
-                onChange={() => setPaymentMethod("COD")}
-                className="mr-2"
-              />
-              <label htmlFor="cod" className="text-gray-700">
-                Cash on Delivery (COD)
-              </label>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="cod"
+                  name="paymentMethod"
+                  value="COD"
+                  checked={paymentMethod === "COD"}
+                  onChange={() => setPaymentMethod("COD")}
+                  className="mr-2"
+                />
+                <label htmlFor="cod" className="text-gray-700">
+                  Cash on Delivery (COD)
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="card"
+                  name="paymentMethod"
+                  value="CARD"
+                  checked={paymentMethod === "CARD"}
+                  onChange={() => setPaymentMethod("CARD")}
+                  className="mr-2"
+                />
+                <label htmlFor="card" className="text-gray-700">
+                  Pay with Card
+                </label>
+              </div>
             </div>
-            <div className="flex items-center mt-2">
-              <input
-                type="radio"
-                id="online"
-                name="paymentMethod"
-                value="Online"
-                disabled
-                className="mr-2"
-              />
-              <label htmlFor="online" className="text-gray-700">
-                Online Payment (Currently unavailable)
-              </label>
-            </div>
+
+            {/* Stripe Card Element */}
+            {paymentMethod === "CARD" && paymentConfig.publishableKey && (
+              <div className="mt-4">
+                <Elements
+                  stripe={stripePromise}
+                  options={{
+                    clientSecret: paymentConfig.clientSecret,
+                    appearance: {
+                      theme: "stripe",
+                    },
+                  }}
+                >
+                  <PaymentForm
+                    totalPrice={totalPrice}
+                    handleOrderSubmit={handleOrderSubmit}
+                    processingPayment={processingPayment}
+                    clientSecret={paymentConfig.clientSecret}
+                  />
+                </Elements>
+              </div>
+            )}
           </div>
         </div>
 
+        {/* Order Summary Section */}
         <div className="space-y-6">
           <div className="bg-white shadow-lg rounded-xl p-6">
             <h3 className="text-xl font-semibold mb-4 flex items-center">
               <ShoppingCart className="mr-2 text-green-600" /> Order Summary
             </h3>
+            {/* Order summary content remains the same */}
             {cart.map((item) => (
               <div
                 key={item.plant_id}
@@ -188,16 +345,19 @@ const CheckoutScreen = () => {
             </div>
           </div>
 
-          <div className="bg-white shadow-lg rounded-xl p-6">
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center"
-            >
-              Complete Order
-              <ChevronLeft className="ml-2 rotate-180" size={20} />
-            </button>
-          </div>
+          {/* Submit Order Button (Only for COD) */}
+          {paymentMethod === "COD" && (
+            <div className="bg-white shadow-lg rounded-xl p-6">
+              <button
+                onClick={() => handleOrderSubmit()}
+                disabled={processingPayment}
+                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center disabled:bg-gray-400"
+              >
+                {processingPayment ? "Processing..." : "Complete Order"}
+                <ChevronLeft className="ml-2 rotate-180" size={20} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
