@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { MessageSquare, Send, Copy, Bot, Sparkles } from "lucide-react";
+import { REACT_APP_API_KEY } from "../../../config/key";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
@@ -18,7 +19,7 @@ const ChatBot = () => {
   }, [messages, isLoading]);
 
   // Initialize AI only once
-  const genAI = new GoogleGenerativeAI(process.env.REACT_APP_API_KEY);
+  const genAI = new GoogleGenerativeAI(REACT_APP_API_KEY);
 
   // Initialize chat session
   const initializeChatSession = async () => {

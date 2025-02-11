@@ -21,6 +21,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-src/utils/geminiKey.jsx
-.env
-.env
+src/config/key.js
