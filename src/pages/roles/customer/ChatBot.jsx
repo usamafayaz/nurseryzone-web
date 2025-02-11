@@ -41,6 +41,7 @@ const ChatBot = () => {
     // Special command to clear chat
     if (inputText.trim().toLowerCase() === "cls") {
       setMessages([]);
+
       setInputText("");
       chatSessionRef.current = null;
       return;
