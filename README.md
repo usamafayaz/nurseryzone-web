@@ -41,6 +41,10 @@
 - **Chatbot Integration**:
   - Customers can get instant information about plants via an integrated chatbot.
   - The chatbot uses the **Gemini API** in the backend for seamless and intelligent conversations.
+- **Stripe Payment Integration**:
+  - Secure online payments for plant orders using Stripe.
+  - Supports multiple payment methods.
+  - Customers receive instant payment confirmations.
 
 ## 🛠️ Tech Stack
 
